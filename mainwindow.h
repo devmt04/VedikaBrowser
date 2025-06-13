@@ -25,11 +25,11 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_gobutton_clicked();
+    void on_searchbar_returnPressed();
 
 private:
     Ui::MainWindow *ui;
-    QPushButton *gobutton, *backbutton, *forwardbutton, *reloadbutton;
+    QPushButton *backbutton, *forwardbutton, *reloadbutton;
     QWebEngineView *view;
     QLineEdit *searchbar;
 

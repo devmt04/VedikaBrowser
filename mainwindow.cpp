@@ -27,7 +27,7 @@ Just like, a button clicked is a signal, and the funtion that is evoked in repon
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#include <iostream>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,7 +36,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // UI Widgets
-    gobutton = ui->gobutton;
+
+    // gobutton = ui->gobutton;
+    // connect(gobutton, &QPushButton::clicked, this,  &MainWindow::on_gobutton_clicked);
+
     backbutton = ui->backbutton;
     forwardbutton = ui->forwardbutton;
     reloadbutton = ui->reloadbutton;
@@ -48,14 +51,13 @@ MainWindow::MainWindow(QWidget *parent)
     forwardbutton->setIcon(QIcon(":/res/icon/arrow_forward_black.svg"));
     reloadbutton->setIcon(QIcon(":/res/icon/reload_black.svg"));
 
-
-
     // Layouting
     // QVBoxLayout *vlayout = ui->verticalLayout;
     // vlayout->addWidget(view);
 
-    connect(gobutton, &QPushButton::clicked, this,  &MainWindow::on_gobutton_clicked);
+
     view->load(QUrl("https://www.google.com/"));
+
     this->showMaximized();
 }
 
@@ -64,10 +66,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_gobutton_clicked()
+
+void MainWindow::on_searchbar_returnPressed()
 {
+    qDebug() << "Rrturned Pressed!!";
     QString searchQuery = searchbar->text();
     view->load(QUrl(searchQuery.toUtf8()));
+
+    /*
+    URL PARSING
+    SEARCH ENGINE INTEGRATION
+    CUSTOM LANDING PAGE
+    SHOW URL AND SEARCHBAR PLACEHOLDER
+    */
+
     // view->hide();
 }
 
