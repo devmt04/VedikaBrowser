@@ -51,12 +51,15 @@ MainWindow::MainWindow(QWidget *parent)
     forwardbutton->setIcon(QIcon(":/res/icon/arrow_forward_black.svg"));
     reloadbutton->setIcon(QIcon(":/res/icon/reload_black.svg"));
 
+    searchbar->setPlaceholderText(QStringLiteral("Search with Google or type a URL"));
+
     // Layouting
     // QVBoxLayout *vlayout = ui->verticalLayout;
     // vlayout->addWidget(view);
 
 
-    view->load(QUrl("https://www.google.com/"));
+    view->load(QUrl("qrc:res/webpages/startup_light.html"));
+    connect(view, &QWebEngineView::urlChanged, this, &MainWindow::onUrlChanged);
 
     this->showMaximized();
 }
@@ -66,12 +69,54 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::onUrlChanged(const QUrl &url){
+    if (!url.isEmpty() && QString::compare(url.toString(), "qrc:res/webpages/startup_light.html", Qt::CaseSensitive) != 0) {
+        searchbar->setText(url.toDisplayString());
+        searchbar->setCursorPosition(0);
+    }
+
+    /* TODO - Highlighting only domain */
+}
+
+bool MainWindow::isUrl(QString query){
+    /*
+`   Rule : If containing spaces, then not a url
+           If not starts with http:// or https:// (as of now) then not a url
+    */
+    if (query.split(' ').size() > 1) {
+        return false;
+    }
+
+    if (!query.startsWith("http://") && !query.startsWith("https://")) {
+        return false;
+    }
+
+    return true;
+
+    // Check for query start with www. and add protocols to them
+    // check for IPs and localhost
+
+    /*
+    Or using
+
+    QUrl url = QUrl::fromUserInput(query);
+    if (url.isValid() && !query.contains(' ')) {
+        return true;  // Treat as URL
+    } else {
+        return false; // Treat as search query
+    }
+    */
+}
+
+QUrl MainWindow::strToGoogleUrl(QString query){
+    return QUrl("https://www.google.com/search?q=" + QUrl::toPercentEncoding(query));
+}
 
 void MainWindow::on_searchbar_returnPressed()
 {
     qDebug() << "Rrturned Pressed!!";
     QString searchQuery = searchbar->text();
-    view->load(QUrl(searchQuery.toUtf8()));
+    QUrl encodedUrl;
 
     /*
     URL PARSING
@@ -79,6 +124,22 @@ void MainWindow::on_searchbar_returnPressed()
     CUSTOM LANDING PAGE
     SHOW URL AND SEARCHBAR PLACEHOLDER
     */
+
+    if(!searchQuery.isEmpty()){
+        if(!isUrl(searchQuery)){
+            qDebug("invalid url\n");
+            encodedUrl = strToGoogleUrl(searchQuery);
+        }else{
+            qDebug("valid url\n");
+            encodedUrl = QUrl(searchQuery.toUtf8());
+        }
+        view->load(encodedUrl);
+        searchbar->setText(encodedUrl.toDisplayString());
+        view->setFocus();
+        // searchbar->setText(view->url().toDisplayString());
+    }
+
+
 
     // view->hide();
 }

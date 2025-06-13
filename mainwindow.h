@@ -33,5 +33,9 @@ private:
     QWebEngineView *view;
     QLineEdit *searchbar;
 
+    bool isUrl(QString query);
+    QUrl strToGoogleUrl(QString query);
+    void onUrlChanged(const QUrl &url);
+
 };
 #endif // MAINWINDOW_H
