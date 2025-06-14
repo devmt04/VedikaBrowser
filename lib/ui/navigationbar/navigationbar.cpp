@@ -1,22 +1,42 @@
 #include "navigationbar.h"
 #include "ui_navigationbar.h"
 
+#include <QDebug>
+
 NavigationBar::NavigationBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::NavigationBar)
 {
     // ui->setupUi(this);
+    this->setObjectName("NaviBarContainer");
+    this->setAttribute(Qt::WA_StyledBackground, true);
+
     horizontalLayout = new QHBoxLayout(this);
 
     naviBtnGrp = new NavigationButtonGroup(this);
     searchBar = new SearchBar(this);
 
+    connect(searchBar, &SearchBar::lineEditFocusIn, this, &NavigationBar::onSearchBarInFocus);
+    connect(searchBar, &SearchBar::lineEditFocusOut, this, &NavigationBar::onSearchBarOutFocus);
+
     horizontalLayout->setContentsMargins(3,5,5,5); // int left, int top, int right, int bottom
     horizontalLayout->addWidget(naviBtnGrp);
     horizontalLayout->addWidget(searchBar);
+
 }
 
 NavigationBar::~NavigationBar()
 {
     delete ui;
+}
+
+void NavigationBar::onSearchBarInFocus(){
+    searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FDF6EC;placeholder-text-color:#7E4E1E;border:none;}");
+    this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FDF6EC;border:1px solid #FFDCA8;border-radius:7px}");
+}
+
+
+void NavigationBar::onSearchBarOutFocus(){
+    searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FFDCA8;placeholder-text-color:#7E4E1E;border:none;}");
+    this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FFDCA8;border:none;border-radius:7px}");
 }
