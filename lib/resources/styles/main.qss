@@ -1,0 +1,19 @@
+QLineEdit#urlInputBar {
+   /* height: 32px;*/
+    border : none;
+    border-radius:7px;
+    padding-left:10px;
+    background-color:#FFDCA8;
+    placeholder-text-color:#7E4E1E;
+}
+
+QLineEdit#urlInputBar:focus{
+    border:1px solid #FFDCA8;
+    background-color:#FDF6EC;
+}
+
+QWidget#SearchBarContainer{
+    background-color:black;
+    border: 1px solid black;
+    margin-left:10px;
+}

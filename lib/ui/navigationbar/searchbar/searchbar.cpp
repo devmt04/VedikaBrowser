@@ -1,0 +1,35 @@
+#include "searchbar.h"
+#include "ui_searchbar.h"
+
+SearchBar::SearchBar(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::SearchBar)
+{
+
+    // ui->setupUi(this); // Nothing in it's .ui file as of now
+
+    this->setObjectName("SearchBarContainer");
+    searchbarLayout = new QHBoxLayout(this);
+    searchEngineSwitchButton = new QPushButton(this);
+    urlInputBar = new QLineEdit(this);
+
+    // Horizontal Layout Prroperties
+    searchbarLayout->setObjectName("searchbarLayout");
+
+    // Search Engine Switch Button Properties
+    searchEngineSwitchButton->setObjectName("searchEngineSwitchButton");
+    searchEngineSwitchButton->setIcon(QIcon(":/lib/resources/icon/searchengines/google-color.svg"));
+
+
+    // Input Bar Properties
+    urlInputBar->setObjectName("urlInputBar");
+    urlInputBar->setPlaceholderText(QStringLiteral("Search with Google or type a URL"));
+
+    searchbarLayout->addWidget(searchEngineSwitchButton);
+    searchbarLayout->addWidget(urlInputBar);
+}
+
+SearchBar::~SearchBar()
+{
+    delete ui;
+}

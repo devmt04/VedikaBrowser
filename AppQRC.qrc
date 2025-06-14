@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>lib/resources/icon/searchengines/google-color.svg</file>
+        <file>lib/resources/styles/main.qss</file>
+    </qresource>
+</RCC>

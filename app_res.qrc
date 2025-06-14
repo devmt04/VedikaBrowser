@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>res/icon/arrow_back_black.svg</file>
-        <file>res/icon/arrow_forward_black.svg</file>
-        <file>res/icon/reload_black.svg</file>
-        <file>res/webpages/startup_light.html</file>
-    </qresource>
-</RCC>

@@ -4,8 +4,16 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-    MainWindow win;
-    win.show();
-    return app.exec();
+    QApplication a(argc, argv);
+
+    QFile styleFile(":/lib/resources/styles/main.qss");
+    if (styleFile.open(QFile::ReadOnly)) {
+        QString style = QLatin1String(styleFile.readAll());
+        a.setStyleSheet(style);
+        styleFile.close();
+    }
+
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

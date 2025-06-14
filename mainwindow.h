@@ -2,13 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QPushButton>
-#include <QLineEdit>
-
+#include <QFile>
 #include <QVBoxLayout>
+#include "./lib/ui/navigationbar/searchbar/searchbar.h"
 
-#include <QUrl>
-#include <QtWebEngineWidgets/QWebEngineView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,18 +21,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_searchbar_returnPressed();
-
 private:
     Ui::MainWindow *ui;
-    QPushButton *backbutton, *forwardbutton, *reloadbutton;
-    QWebEngineView *view;
-    QLineEdit *searchbar;
-
-    bool isUrl(QString query);
-    QUrl strToGoogleUrl(QString query);
-    void onUrlChanged(const QUrl &url);
-
+    QVBoxLayout *centralLayout;
+    SearchBar *searchBar;
 };
 #endif // MAINWINDOW_H
