@@ -9,12 +9,12 @@ SearchBar::SearchBar(QWidget *parent)
     // ui->setupUi(this); // Nothing in it's .ui file as of now
 
     this->setObjectName("SearchBarContainer");
+    this->setAttribute(Qt::WA_StyledBackground, true);
+
     searchbarLayout = new QHBoxLayout(this);
     searchEngineSwitchButton = new QPushButton(this);
     urlInputBar = new QLineEdit(this);
 
-    // Horizontal Layout Prroperties
-    searchbarLayout->setObjectName("searchbarLayout");
 
     // Search Engine Switch Button Properties
     searchEngineSwitchButton->setObjectName("searchEngineSwitchButton");
@@ -25,8 +25,13 @@ SearchBar::SearchBar(QWidget *parent)
     urlInputBar->setObjectName("urlInputBar");
     urlInputBar->setPlaceholderText(QStringLiteral("Search with Google or type a URL"));
 
+
+    // Horizontal Layout Prroperties
+    searchbarLayout->setObjectName("searchbarLayout");
+
     searchbarLayout->addWidget(searchEngineSwitchButton);
     searchbarLayout->addWidget(urlInputBar);
+
 }
 
 SearchBar::~SearchBar()

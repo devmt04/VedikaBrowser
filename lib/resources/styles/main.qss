@@ -1,10 +1,15 @@
+QWidget#MainWindow{
+    margin: 0;
+}
+
 QLineEdit#urlInputBar {
    /* height: 32px;*/
     border : none;
-    border-radius:7px;
-    padding-left:10px;
+/*    border-radius:7px;*/
+/*    padding-left:10px;*/
     background-color:#FFDCA8;
     placeholder-text-color:#7E4E1E;
+    padding:5px;
 }
 
 QLineEdit#urlInputBar:focus{
@@ -13,7 +18,11 @@ QLineEdit#urlInputBar:focus{
 }
 
 QWidget#SearchBarContainer{
-    background-color:black;
     border: 1px solid black;
-    margin-left:10px;
+    background-color: #FFDCA8;
+    border-radius: 7px;
+}
+
+QPushButton#searchEngineSwitchButton{
+    border:none;
 }

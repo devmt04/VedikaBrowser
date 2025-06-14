@@ -5,7 +5,7 @@
 #include <QFile>
 #include <QVBoxLayout>
 #include "./lib/ui/navigationbar/searchbar/searchbar.h"
-
+#include "./lib/ui/WebEngineView/webengineview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,5 +25,6 @@ private:
     Ui::MainWindow *ui;
     QVBoxLayout *centralLayout;
     SearchBar *searchBar;
+    WebEngineView *webEngineView;
 };
 #endif // MAINWINDOW_H
