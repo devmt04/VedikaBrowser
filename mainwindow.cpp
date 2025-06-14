@@ -9,12 +9,14 @@ MainWindow::MainWindow(QWidget *parent)
     // ui->setupUi(this);
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* centralLayout = new QVBoxLayout(centralWidget);
+
+    navigationBar = new NavigationBar(centralWidget);
+    webEngineView = new WebEngineView(centralWidget);
+
     centralLayout->setContentsMargins(0,0,0,0);
     centralLayout->setSpacing(0);
-    searchBar = new SearchBar(centralWidget);
-    centralLayout->addWidget(searchBar);
 
-    webEngineView = new WebEngineView(centralWidget);
+    centralLayout->addWidget(navigationBar);
     centralLayout->addWidget(webEngineView);
 
     this->setCentralWidget(centralWidget);

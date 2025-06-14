@@ -17,7 +17,7 @@ SearchBar::SearchBar(QWidget *parent)
 
 
     // Search Engine Switch Button Properties
-    searchEngineSwitchButton->setObjectName("searchEngineSwitchButton");
+    searchEngineSwitchButton->setProperty("class", "borderless");
     searchEngineSwitchButton->setIcon(QIcon(":/lib/resources/icon/searchengines/google-color.svg"));
 
 

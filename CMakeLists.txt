@@ -26,6 +26,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         lib/ui/navigationbar/searchbar/searchbar.h lib/ui/navigationbar/searchbar/searchbar.cpp lib/ui/navigationbar/searchbar/searchbar.ui
         AppQRC.qrc
         lib/ui/WebEngineView/webengineview.h lib/ui/WebEngineView/webengineview.cpp lib/ui/WebEngineView/webengineview.ui
+        lib/ui/navigationbar/navigationbar.h lib/ui/navigationbar/navigationbar.cpp lib/ui/navigationbar/navigationbar.ui
+        lib/ui/navigationbar/NavigationButtonGroup/navigationbuttongroup.h lib/ui/navigationbar/NavigationButtonGroup/navigationbuttongroup.cpp lib/ui/navigationbar/NavigationButtonGroup/navigationbuttongroup.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET VedikaWebBrowser APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
