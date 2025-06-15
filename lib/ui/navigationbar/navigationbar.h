@@ -19,9 +19,16 @@ public:
     explicit NavigationBar(QWidget *parent = nullptr);
     ~NavigationBar();
 
+signals:
+    void searchRequested(const QUrl &url);
+
+public slots:
+    void setSearchbarText(const QString &text);
+
 private slots:
     void onSearchBarInFocus();
     void onSearchBarOutFocus();
+    void onLineEditReturnPress(const QUrl &url);
 
 // protected:
 //    bool eventFilter(QObject *watched, QEvent *event) override;

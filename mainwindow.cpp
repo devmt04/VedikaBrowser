@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,12 +20,21 @@ MainWindow::MainWindow(QWidget *parent)
     centralLayout->addWidget(navigationBar);
     centralLayout->addWidget(webEngineView);
 
+    connect(navigationBar, &NavigationBar::searchRequested, this, &MainWindow::onSearchRequested);
+    connect(webEngineView, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
+
     this->setCentralWidget(centralWidget);
     this->showMaximized();
 }
 
 MainWindow::~MainWindow()
 {
-
     delete ui;
 }
+
+
+void MainWindow::onSearchRequested(const QUrl &url){
+    qDebug() << url ;
+    webEngineView->loadUrl(url);
+}
+

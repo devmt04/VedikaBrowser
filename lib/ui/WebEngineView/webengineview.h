@@ -15,6 +15,13 @@ class WebEngineView : public QWidget
 public:
     explicit WebEngineView(QWidget *parent = nullptr);
     ~WebEngineView();
+    void loadUrl(QUrl url);
+
+signals:
+    void urlChanged(const QString &url);
+
+private slots:
+    void onUrlChanged(const QUrl &url);
 
 private:
     Ui::WebEngineView *ui;

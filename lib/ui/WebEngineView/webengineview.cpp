@@ -14,9 +14,21 @@ WebEngineView::WebEngineView(QWidget *parent)
 
     webEngineView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     webEngineView->load(QUrl("qrc:/lib/resources/webpages/startup_light.html"));
+
+    connect(webEngineView, &QWebEngineView::urlChanged,this, &WebEngineView::onUrlChanged);
 }
 
 WebEngineView::~WebEngineView()
 {
     delete ui;
+}
+
+void WebEngineView::loadUrl(QUrl url){
+    webEngineView->load(url);
+    webEngineView->setFocus();
+}
+
+void WebEngineView::onUrlChanged(const QUrl &url){
+    // use lambda instead
+    emit urlChanged(url.toDisplayString());
 }

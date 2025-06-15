@@ -21,6 +21,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onSearchRequested(const QUrl &url);
+
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *centralLayout;

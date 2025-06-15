@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QEvent>
+#include <QKeyEvent>
 
 namespace Ui {
 class SearchBar;
@@ -17,12 +18,13 @@ class SearchBar : public QWidget
 
 public:
     explicit SearchBar(QWidget *parent = nullptr);
-    QLineEdit *getLineEdit();
     ~SearchBar();
+    void setInputBarText(const QString &text);
 
 signals:
     void lineEditFocusIn();
     void lineEditFocusOut();
+    void lindEditReturnPress(const QUrl &url);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -32,6 +34,10 @@ private:
     QHBoxLayout *searchbarLayout;
     QPushButton *searchEngineSwitchButton;
     QLineEdit *urlInputBar;
+
+    QUrl processQuery(const QString &query);
+    bool isUrl(const QString &query);
+    QUrl strToGoogleUrl(const QString &query);
 };
 
 #endif // SEARCHBAR_H
