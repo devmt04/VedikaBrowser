@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include "./lib/ui/navigationbar/navigationbar.h"
 #include "./lib/ui/WebEngineView/webengineview.h"
+#include "./lib/ui/tabbar/tabbar.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,6 +28,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *centralLayout;
+    TabBar *tabBar;
     NavigationBar *navigationBar;
     WebEngineView *webEngineView;
 };

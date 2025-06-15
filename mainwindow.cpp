@@ -11,12 +11,14 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* centralLayout = new QVBoxLayout(centralWidget);
 
+    tabBar = new TabBar(centralWidget);
     navigationBar = new NavigationBar(centralWidget);
     webEngineView = new WebEngineView(centralWidget);
 
     centralLayout->setContentsMargins(0,0,0,0);
     centralLayout->setSpacing(0);
 
+    centralLayout->addWidget(tabBar);
     centralLayout->addWidget(navigationBar);
     centralLayout->addWidget(webEngineView);
 

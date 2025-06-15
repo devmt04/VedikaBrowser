@@ -20,3 +20,13 @@ QWidget#NaviBarContainer{
 QPushButton[class="borderless"] {
     border: none;
 }
+
+QPushButton#applicationExitButton{
+    padding:3px;
+}
+
+QPushButton#applicationExitButton:hover{
+    background-color: #FDF6EC;
+    border: 1px solid black;
+    border-radius: 5px;
+}

@@ -6,5 +6,6 @@
         <file>lib/resources/icon/reload_black.svg</file>
         <file>lib/resources/icon/arrow_forward_black.svg</file>
         <file>lib/resources/icon/arrow_back_black.svg</file>
+        <file>lib/resources/icon/cross_black.svg</file>
     </qresource>
 </RCC>
