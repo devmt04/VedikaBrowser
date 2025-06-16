@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+// #include "./lib/utils/3rd-party/Qt-FramelessWindow/include/FramelessWindow.hpp"
+
 
 int main(int argc, char *argv[])
 {
@@ -15,5 +17,8 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+    // FramelessWindow<MainWindow> *frameLessWindow = new FramelessWindow<MainWindow>(true);
+    // frameLessWindow->setContentsMargins(1,1,1,1);
+    // frameLessWindow->show();
     return a.exec();
 }

@@ -12,6 +12,7 @@ NavigationBar::NavigationBar(QWidget *parent)
     this->setAttribute(Qt::WA_StyledBackground, true);
 
     horizontalLayout = new QHBoxLayout(this);
+    this->setLayout(horizontalLayout);
 
     naviBtnGrp = new NavigationButtonGroup(this);
     searchBar = new SearchBar(this);
@@ -23,6 +24,8 @@ NavigationBar::NavigationBar(QWidget *parent)
     horizontalLayout->setContentsMargins(3,5,5,5); // int left, int top, int right, int bottom
     horizontalLayout->addWidget(naviBtnGrp);
     horizontalLayout->addWidget(searchBar);
+
+    // TODO : Handle double click event to miniize/maximize the Browser's Window
 }
 
 NavigationBar::~NavigationBar()
@@ -34,7 +37,6 @@ void NavigationBar::onSearchBarInFocus(){
     searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FDF6EC;placeholder-text-color:#7E4E1E;border:none;}");
     this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FDF6EC;border:1px solid #FFDCA8;border-radius:7px}");
 }
-
 
 void NavigationBar::onSearchBarOutFocus(){
     searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FFDCA8;placeholder-text-color:#7E4E1E;border:none;}");

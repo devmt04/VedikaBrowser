@@ -30,10 +30,6 @@ private slots:
     void onSearchBarOutFocus();
     void onLineEditReturnPress(const QUrl &url);
 
-// protected:
-//    bool eventFilter(QObject *watched, QEvent *event) override;
-//      // called for every event received by an object(obj in this case) that this class is filtering
-
 private:
     Ui::NavigationBar *ui;
     QHBoxLayout *horizontalLayout;

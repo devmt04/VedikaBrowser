@@ -13,6 +13,8 @@ SearchBar::SearchBar(QWidget *parent)
     this->setAttribute(Qt::WA_StyledBackground, true);
 
     searchbarLayout = new QHBoxLayout(this);
+    this->setLayout(searchbarLayout);
+
     searchEngineSwitchButton = new QPushButton(this);
     urlInputBar = new QLineEdit(this);
 

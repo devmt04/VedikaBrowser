@@ -15,6 +15,7 @@ QWidget#SearchBarContainer{
 
 QWidget#NaviBarContainer{
     background-color:#FDF6EC;
+/*    border-top: 1px solid #F5BD8A;*/
 }
 
 QPushButton[class="borderless"] {
@@ -29,4 +30,30 @@ QPushButton#applicationExitButton:hover{
     background-color: #FDF6EC;
     border: 1px solid black;
     border-radius: 5px;
+}
+
+QTabBar::tab {
+    background: #FFE5BF;
+/*    border: 1px solid #ccc;*/
+    padding: 6px 12px;
+/*    width: 120px;*/
+    max-width: 120px;
+    min-width: 50px;
+    border: none;
+}
+
+
+QTabBar::tab:selected {
+    background: #FDF6EC;
+    border-top: 1px solid #F5BD8A;
+    border-left : 1px solid #F5BD8A;
+    border-right : 1px solid #F5BD8A;
+    border-bottom-color: transparent;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+/*    font-weight: bold;*/
+}
+
+QTabBar::tab:hover {
+    background-color: #FFCE87;
 }

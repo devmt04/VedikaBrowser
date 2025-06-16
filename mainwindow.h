@@ -28,6 +28,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *centralLayout;
+    // FramelessWindow<MainWindow> *window;
     TabBar *tabBar;
     NavigationBar *navigationBar;
     WebEngineView *webEngineView;

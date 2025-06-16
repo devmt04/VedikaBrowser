@@ -7,6 +7,8 @@ NavigationButtonGroup::NavigationButtonGroup(QWidget *parent)
 {
     // ui->setupUi(this);
     horizontalLayout = new QHBoxLayout(this);
+    this->setLayout(horizontalLayout);
+
     backButton = new QPushButton(this);
     forwardButton = new QPushButton(this);
     reloadButton = new QPushButton(this);

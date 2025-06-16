@@ -6,12 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
+    // this->setWindowFlags(Qt::Popup);
+    // this->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
     // ui->setupUi(this);
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* centralLayout = new QVBoxLayout(centralWidget);
+    centralWidget->setLayout(centralLayout);
 
     tabBar = new TabBar(centralWidget);
+    // tabBar = new FramelessWindow<TabBar>(false, centralWidget);
     navigationBar = new NavigationBar(centralWidget);
     webEngineView = new WebEngineView(centralWidget);
 
@@ -26,7 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(webEngineView, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
 
     this->setCentralWidget(centralWidget);
+    // this->setWindowFlags(Qt::FramelessWindowHint);
+    // TODO : Make window frameless and add ability to make it move, resize from corners
     this->showMaximized();
+    // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
 }
 
 MainWindow::~MainWindow()

@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QSizePolicy>
 #include <QMessageBox>
+#include <QScrollArea>
+#include "./tabitem/tabitem.h"
 
 namespace Ui {
 class TabBar;
@@ -20,11 +22,20 @@ public:
     explicit TabBar(QWidget *parent = nullptr);
     ~TabBar();
 
+// protected:
+//     void mouseDoubleClickEvent(QMouseEvent *event) override;
+
 private:
     Ui::TabBar *ui;
-    QHBoxLayout *horizontalLayout;
+    QHBoxLayout *topHBoxLayout;
+    QWidget *customTabBarWidget;
+    QHBoxLayout *tabHBoxLayout;
+    QScrollArea *tabScrollArea;
+    QWidget *tabContainer;
+    QHBoxLayout *tabContainerHBoxLayout;
+    TabItem *defaultTabItem;
+    QPushButton *addNewTabButton;
     QPushButton *applicationExitButton;
-    QTabBar *tabBar;
 };
 
 #endif // TABBAR_H
