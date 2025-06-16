@@ -34,6 +34,7 @@ private:
     QWidget *tabContainer;
     QHBoxLayout *tabContainerHBoxLayout;
     TabItem *defaultTabItem;
+    TabItem *defaultTabItem2;
     QPushButton *addNewTabButton;
     QPushButton *applicationExitButton;
 };

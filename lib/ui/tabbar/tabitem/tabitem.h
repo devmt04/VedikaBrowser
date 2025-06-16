@@ -2,6 +2,10 @@
 #define TABITEM_H
 
 #include <QWidget>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QPixmap>
 
 namespace Ui {
 class TabItem;
@@ -17,6 +21,11 @@ public:
 
 private:
     Ui::TabItem *ui;
+    QHBoxLayout *hboxLayout;
+    QLabel *favicon;
+    QLabel *title;
+    QPushButton *closeTabButton;
+
 };
 
 #endif // TABITEM_H
