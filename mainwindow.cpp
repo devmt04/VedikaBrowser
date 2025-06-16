@@ -6,9 +6,20 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    /*
+    MainWindow (QMainWindow)
+    └── centralWidget (QWidget)
+        └── QVBoxLayout (centralLayout)
+            ├── tabBar (TabBar)
+            ├── navigationBar (NavigationBar)
+            └── webEngineView (WebEngineView)
+    */
+
     // this->setWindowFlags(Qt::Popup);
     // this->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
     // ui->setupUi(this);
+
+
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* centralLayout = new QVBoxLayout(centralWidget);
     centralWidget->setLayout(centralLayout);

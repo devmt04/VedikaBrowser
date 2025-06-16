@@ -5,6 +5,12 @@ WebEngineView::WebEngineView(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::WebEngineView)
 {
+    /*
+    WebEngineContainer (QWidget)
+    └── QVBoxLayout (layout)
+        └── QWebEngineView (webEngineView)
+
+    */
     // ui->setupUi(this);
     layout = new QVBoxLayout(this);
     webEngineView = new QWebEngineView(this);

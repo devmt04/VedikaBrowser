@@ -7,6 +7,12 @@ NavigationBar::NavigationBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::NavigationBar)
 {
+    /*
+    NaviBarContainer (QWidget)
+    └── QHBoxLayout (horizontalLayout)
+        ├── NavigationButtonGroup (naviBtnGrp)
+        └── SearchBar (searchBar)
+    */
     // ui->setupUi(this);
     this->setObjectName("NaviBarContainer");
     this->setAttribute(Qt::WA_StyledBackground, true);

@@ -8,7 +8,12 @@ SearchBar::SearchBar(QWidget *parent)
 {
 
     // ui->setupUi(this); // Nothing in it's .ui file as of now
-
+    /*
+    SearchBarContainer (QWidget)
+    └── QHBoxLayout (searchbarLayout)
+        ├── QPushButton (searchEngineSwitchButton)
+        └── QLineEdit (urlInputBar)
+    */
     this->setObjectName("SearchBarContainer");
     this->setAttribute(Qt::WA_StyledBackground, true);
 

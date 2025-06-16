@@ -5,6 +5,14 @@ NavigationButtonGroup::NavigationButtonGroup(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::NavigationButtonGroup)
 {
+    /*
+    NavigationBar (QWidget)
+    └── QHBoxLayout (horizontalLayout)
+        ├── backButton (QPushButton)
+        ├── forwardButton (QPushButton)
+        └── reloadButton (QPushButton)
+    */
+
     // ui->setupUi(this);
     horizontalLayout = new QHBoxLayout(this);
     this->setLayout(horizontalLayout);
