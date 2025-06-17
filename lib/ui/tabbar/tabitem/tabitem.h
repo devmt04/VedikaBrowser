@@ -16,11 +16,22 @@ class TabItem : public QWidget
     Q_OBJECT
 
 public:
-    explicit TabItem(QWidget *parent = nullptr);
+    // explicit TabItem(QWidget *parent = nullptr);
+    explicit TabItem(QWidget *parent = nullptr,
+                     const QString &title_string = "New Tab",
+                     const QPixmap &pixmap = QPixmap(":/lib/resources/icon/searchengines/google-color.svg"));
     ~TabItem();
 
+signals:
+    void tabClosed(TabItem *self);
+
+private slots:
+    void onCloseButtonPressed();
+
 private:
-    Ui::TabItem *ui;
+    // Ui::TabItem *ui;
+    const QString tab_title;
+    const QPixmap tab_pixmap;
     QHBoxLayout *hboxLayout;
     QLabel *favicon;
     QLabel *title;

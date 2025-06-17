@@ -10,6 +10,8 @@
 #include <QScrollArea>
 #include "./tabitem/tabitem.h"
 
+#include <QVector>
+
 namespace Ui {
 class TabBar;
 }
@@ -25,6 +27,10 @@ public:
 // protected:
 //     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
+private slots:
+    void addNewTab();
+    void closeTab(TabItem *tab);
+
 private:
     Ui::TabBar *ui;
     QHBoxLayout *topHBoxLayout;
@@ -37,6 +43,8 @@ private:
     TabItem *defaultTabItem2;
     QPushButton *addNewTabButton;
     QPushButton *applicationExitButton;
+
+    QVector<TabItem*> tabVector;
 };
 
 #endif // TABBAR_H

@@ -1,9 +1,12 @@
 #include "tabitem.h"
 #include "ui_tabitem.h"
+#include <QDebug>
 
-TabItem::TabItem(QWidget *parent)
+TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pixmap)
     : QWidget(parent)
-    , ui(new Ui::TabItem)
+    /*, ui(new Ui::TabItem)*/
+    , tab_title(title_string)
+    , tab_pixmap(pixmap)
 {
     // ui->setupUi(this);
     /*
@@ -23,7 +26,7 @@ TabItem::TabItem(QWidget *parent)
 
     this->setFixedHeight(35);
     this->setMaximumWidth(150);
-    this->setMinimumWidth(100);
+    this->setMinimumWidth(70);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     hboxLayout = new QHBoxLayout();
@@ -33,11 +36,13 @@ TabItem::TabItem(QWidget *parent)
 
     favicon = new QLabel(this);
     title = new QLabel(this);
+
     closeTabButton = new QPushButton(QIcon(":/lib/resources/icon/cross_black.svg"), "", this);
     closeTabButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(closeTabButton, &QPushButton::clicked, this, &TabItem::onCloseButtonPressed);
 
-    QPixmap pixmap(":/lib/resources/icon/searchengines/google-color.svg");
-    favicon->setPixmap(pixmap.scaled(
+    // QPixmap pixmap(":/lib/resources/icon/searchengines/google-color.svg");
+    favicon->setPixmap(tab_pixmap.scaled(
         favicon->size(),               // scale to label size
         Qt::KeepAspectRatio,          // maintain aspect ratio
         Qt::SmoothTransformation));   // smooth scaling
@@ -46,7 +51,7 @@ TabItem::TabItem(QWidget *parent)
     favicon->setFixedWidth(15);
     favicon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    title->setText(QString("New Tab"));
+    title->setText(tab_title);
 
     hboxLayout->addWidget(favicon);
     hboxLayout->addWidget(title);
@@ -55,5 +60,11 @@ TabItem::TabItem(QWidget *parent)
 
 TabItem::~TabItem()
 {
-    delete ui;
+    // delete ui;
 }
+
+
+void TabItem::onCloseButtonPressed(){
+    emit tabClosed(this);
+}
+
