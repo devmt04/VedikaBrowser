@@ -3,16 +3,17 @@
 
 WebEngineView::WebEngineView(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::WebEngineView)
+    /*, ui(new Ui::WebEngineView)*/
 {
     /*
     WebEngineContainer (QWidget)
-    └── QVBoxLayout (layout)
+    └── QHBoxLayout (layout)
         └── QWebEngineView (webEngineView)
 
+    TODO : Replace QHBoxLayout with a custom layout
     */
     // ui->setupUi(this);
-    layout = new QVBoxLayout(this);
+    layout = new QHBoxLayout(this);
     webEngineView = new QWebEngineView(this);
 
     layout->setContentsMargins(0,0,0,0);
@@ -26,7 +27,7 @@ WebEngineView::WebEngineView(QWidget *parent)
 
 WebEngineView::~WebEngineView()
 {
-    delete ui;
+    // delete ui;
 }
 
 void WebEngineView::loadUrl(QUrl url){

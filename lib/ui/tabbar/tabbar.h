@@ -26,10 +26,15 @@ public:
 
 // protected:
 //     void mouseDoubleClickEvent(QMouseEvent *event) override;
+signals:
+    void newTabAdded(TabItem *tab);
+    void tabClosed(TabItem *tab);
+    void tabSelected(TabItem *tab);
 
 private slots:
     void addNewTab();
     void closeTab(TabItem *tab);
+    void selectTab(TabItem *tab);
 
 private:
     Ui::TabBar *ui;

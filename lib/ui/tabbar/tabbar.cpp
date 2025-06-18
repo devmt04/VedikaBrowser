@@ -6,10 +6,6 @@ TabBar::TabBar(QWidget *parent)
     , ui(new Ui::TabBar)
 {
 
-    // HLayout -> TabBar + ExirButton
-        // TabBar -> ScrollArea + AddTabNtm
-            // ScrollArea -> customTabs
-
     //  [<] [Tab1][Tab2][Tab3][+] [>]
 
     /*
@@ -86,6 +82,7 @@ TabBar::TabBar(QWidget *parent)
     // In tabContainer - tabContainerHBoxLayout
     defaultTabItem = new TabItem(tabContainer);
     connect(defaultTabItem, &TabItem::tabClosed, this, &TabBar::closeTab);
+    connect(defaultTabItem, &TabItem::tabClicked, this, &TabBar::selectTab);
     tabContainerHBoxLayout->addWidget(defaultTabItem);
     // -- end --
 
@@ -109,14 +106,21 @@ TabBar::~TabBar()
 void TabBar::addNewTab(){
     TabItem *tab = new TabItem(tabContainer);
     connect(tab, &TabItem::tabClosed, this, &TabBar::closeTab);
+    connect(tab, &TabItem::tabClicked, this, &TabBar::selectTab);
     tabContainerHBoxLayout->addWidget(tab);
     tabVector.append(tab);
+    emit newTabAdded(tab);
 }
 
 void TabBar::closeTab(TabItem *tab){
     tabContainerHBoxLayout->removeWidget(tab);
     tabVector.removeOne(tab);
     tab->deleteLater();
+    emit tabClosed(tab);
+}
+
+void TabBar::selectTab(TabItem *tab){
+    emit tabSelected(tab);
 }
 
 // void TabBar::mouseDoubleClickEvent(QMouseEvent *event){

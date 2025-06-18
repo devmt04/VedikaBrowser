@@ -2,7 +2,7 @@
 #define WEBENGINEVIEW_H
 
 #include <QWidget>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QtWebEngineWidgets/QWebEngineView>
 namespace Ui {
 class WebEngineView;
@@ -24,8 +24,8 @@ private slots:
     void onUrlChanged(const QUrl &url);
 
 private:
-    Ui::WebEngineView *ui;
-    QVBoxLayout *layout;
+    // Ui::WebEngineView *ui;
+    QHBoxLayout *layout;
     QWebEngineView *webEngineView;
 };
 

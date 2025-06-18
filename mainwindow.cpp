@@ -4,7 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    /*, ui(new Ui::MainWindow)*/
 {
     /*
     MainWindow (QMainWindow)
@@ -27,33 +27,69 @@ MainWindow::MainWindow(QWidget *parent)
     tabBar = new TabBar(centralWidget);
     // tabBar = new FramelessWindow<TabBar>(false, centralWidget);
     navigationBar = new NavigationBar(centralWidget);
-    webEngineView = new WebEngineView(centralWidget);
+    stackedWebArea = new QStackedWidget(centralWidget);
+    defaultWebEngineView = new WebEngineView(stackedWebArea);
+
+    stackedWebArea->addWidget(defaultWebEngineView);
+    stackedWebArea->setCurrentWidget(defaultWebEngineView);
 
     centralLayout->setContentsMargins(0,0,0,0);
     centralLayout->setSpacing(0);
 
     centralLayout->addWidget(tabBar);
     centralLayout->addWidget(navigationBar);
-    centralLayout->addWidget(webEngineView);
+    centralLayout->addWidget(stackedWebArea);
 
+    connect(tabBar, &TabBar::newTabAdded, this, &MainWindow::onNewTabAdded);
+    connect(tabBar, &TabBar::tabClosed, this, &MainWindow::onTabClosed);
+    connect(tabBar, &TabBar::tabSelected, this, &MainWindow::onTabSelected);
     connect(navigationBar, &NavigationBar::searchRequested, this, &MainWindow::onSearchRequested);
-    connect(webEngineView, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
+    connect(defaultWebEngineView, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
 
     this->setCentralWidget(centralWidget);
+    this->showMaximized();
     // this->setWindowFlags(Qt::FramelessWindowHint);
     // TODO : Make window frameless and add ability to make it move, resize from corners
-    this->showMaximized();
     // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
+
+    // TODO : MANAGE DEFUALT TABITEM DELETE, SELECT EVENT
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    // delete ui;
 }
 
 
 void MainWindow::onSearchRequested(const QUrl &url){
     qDebug() << url ;
-    webEngineView->loadUrl(url);
+    defaultWebEngineView->loadUrl(url);
+}
+
+void MainWindow::onNewTabAdded(TabItem *tab){
+    WebEngineView *webWidget = new WebEngineView(stackedWebArea);
+    stackedWebArea->addWidget(webWidget);
+    stackedWebArea->setCurrentWidget(webWidget);
+
+    tabMap.insert(tab, webWidget);
+
+    connect(webWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
+    webWidget->loadUrl(QUrl("https://www.google.com/"));
+} // TODO : change it as per tab clicks
+
+
+void MainWindow::onTabClosed(TabItem *tab){
+    WebEngineView *view = tabMap.take(tab); // .take() will also remove the tab
+    if(view){
+        stackedWebArea->removeWidget(view);
+        view->deleteLater();
+    }
+}
+
+void MainWindow::onTabSelected(TabItem *tab){
+    WebEngineView *view = tabMap.value(tab);
+    if(view){
+        stackedWebArea->setCurrentWidget(view);
+    }
 }
 

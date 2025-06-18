@@ -68,3 +68,8 @@ void TabItem::onCloseButtonPressed(){
     emit tabClosed(this);
 }
 
+void TabItem::mousePressEvent(QMouseEvent *event){
+    QWidget::mousePressEvent(event); // Preserves base behaviour
+    // qDebug() << "click";
+    emit tabClicked(this);
+}

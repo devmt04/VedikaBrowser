@@ -24,9 +24,13 @@ public:
 
 signals:
     void tabClosed(TabItem *self);
+    void tabClicked(TabItem *self);
 
 private slots:
     void onCloseButtonPressed();
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
     // Ui::TabItem *ui;
