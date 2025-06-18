@@ -30,7 +30,7 @@ WebEngineView::~WebEngineView()
     // delete ui;
 }
 
-void WebEngineView::loadUrl(QUrl url){
+void WebEngineView::loadUrl(const QUrl &url){
     webEngineView->load(url);
     webEngineView->setFocus();
 }
@@ -39,3 +39,8 @@ void WebEngineView::onUrlChanged(const QUrl &url){
     // use lambda instead
     emit urlChanged(url.toDisplayString());
 }
+
+QUrl WebEngineView::getUrl() const {
+    return webEngineView->url();
+}
+

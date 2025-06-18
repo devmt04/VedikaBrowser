@@ -15,7 +15,8 @@ class WebEngineView : public QWidget
 public:
     explicit WebEngineView(QWidget *parent = nullptr);
     ~WebEngineView();
-    void loadUrl(QUrl url);
+    void loadUrl(const QUrl &url);
+    QUrl getUrl() const;
 
 signals:
     void urlChanged(const QString &url);

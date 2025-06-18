@@ -40,6 +40,7 @@ private:
     NavigationBar *navigationBar;
     QStackedWidget *stackedWebArea;
     WebEngineView *defaultWebEngineView;
+    WebEngineView *currentWebEngineView;
     QMap<TabItem*, WebEngineView*> tabMap;
 };
 #endif // MAINWINDOW_H

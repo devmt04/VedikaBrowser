@@ -41,6 +41,8 @@ private:
     QLabel *title;
     QPushButton *closeTabButton;
 
+    void setTitle(const QString &new_title);
+
 };
 
 #endif // TABITEM_H

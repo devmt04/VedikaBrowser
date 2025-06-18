@@ -25,20 +25,24 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     // DEBUG-END
 
     this->setFixedHeight(35);
-    this->setMaximumWidth(150);
+    this->setMaximumWidth(220);
     this->setMinimumWidth(70);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     hboxLayout = new QHBoxLayout();
     hboxLayout->setContentsMargins(0,2,0,0); // left, top, right, bottom
-    hboxLayout->setSpacing(10);
+    // hboxLayout->setSpacing(10);
     this->setLayout(hboxLayout);
 
     favicon = new QLabel(this);
     title = new QLabel(this);
 
     closeTabButton = new QPushButton(QIcon(":/lib/resources/icon/cross_black.svg"), "", this);
+    closeTabButton->setIconSize(QSize(12, 12));
+    closeTabButton->setFixedSize(20, 20);
     closeTabButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    closeTabButton->setObjectName("closeTabButton");
+    // closeTabButton->setContentsMargins(3,0,3,0);
     connect(closeTabButton, &QPushButton::clicked, this, &TabItem::onCloseButtonPressed);
 
     // QPixmap pixmap(":/lib/resources/icon/searchengines/google-color.svg");
@@ -47,11 +51,24 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
         Qt::KeepAspectRatio,          // maintain aspect ratio
         Qt::SmoothTransformation));   // smooth scaling
     favicon->setScaledContents(true);
-    favicon->setFixedHeight(15);
-    favicon->setFixedWidth(15);
+    favicon->setFixedHeight(14);
+    favicon->setFixedWidth(14);
     favicon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // favicon->setContentsMargins(3,0,0,0);
 
     title->setText(tab_title);
+    title->setObjectName("title");
+    // title->setStyleSheet("QLabel#title{border:1px solid blue}");
+    title->setMinimumWidth(30);
+    title->setMaximumWidth(150);
+    title->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+
+    // title->setContentsMargins(10,0,3,0);
+
+    // favicon->setContentsMargins(5, 0, 0, 0);
+   // title->setContentsMargins(5, 0, 5, 0);
+   // closeTabButton->setContentsMargins(5, 0, 5, 0);
 
     hboxLayout->addWidget(favicon);
     hboxLayout->addWidget(title);
@@ -72,4 +89,8 @@ void TabItem::mousePressEvent(QMouseEvent *event){
     QWidget::mousePressEvent(event); // Preserves base behaviour
     // qDebug() << "click";
     emit tabClicked(this);
+}
+
+void TabItem::setTitle(const QString &new_title){
+    title->setText(new_title);
 }

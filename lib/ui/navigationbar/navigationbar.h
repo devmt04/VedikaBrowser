@@ -17,13 +17,14 @@ class NavigationBar : public QWidget
 
 public:
     explicit NavigationBar(QWidget *parent = nullptr);
+    void setSearchbarText(const QString &text);
     ~NavigationBar();
 
 signals:
     void searchRequested(const QUrl &url);
 
-public slots:
-    void setSearchbarText(const QString &text);
+// public slots:
+//     void setSearchbarText(const QString &text);
 
 private slots:
     void onSearchBarInFocus();

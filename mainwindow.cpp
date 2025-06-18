@@ -28,7 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     // tabBar = new FramelessWindow<TabBar>(false, centralWidget);
     navigationBar = new NavigationBar(centralWidget);
     stackedWebArea = new QStackedWidget(centralWidget);
+
     defaultWebEngineView = new WebEngineView(stackedWebArea);
+    currentWebEngineView = defaultWebEngineView;
 
     stackedWebArea->addWidget(defaultWebEngineView);
     stackedWebArea->setCurrentWidget(defaultWebEngineView);
@@ -63,7 +65,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::onSearchRequested(const QUrl &url){
     qDebug() << url ;
-    defaultWebEngineView->loadUrl(url);
+    currentWebEngineView->loadUrl(url);
 }
 
 void MainWindow::onNewTabAdded(TabItem *tab){
@@ -74,7 +76,9 @@ void MainWindow::onNewTabAdded(TabItem *tab){
     tabMap.insert(tab, webWidget);
 
     connect(webWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    webWidget->loadUrl(QUrl("https://www.google.com/"));
+    currentWebEngineView = webWidget;
+    navigationBar->setSearchbarText(webWidget->getUrl().toDisplayString());
+    qDebug() << webWidget->getUrl().toDisplayString();
 } // TODO : change it as per tab clicks
 
 
@@ -84,12 +88,15 @@ void MainWindow::onTabClosed(TabItem *tab){
         stackedWebArea->removeWidget(view);
         view->deleteLater();
     }
+    // TODO : HANDLE currentWebEngineView
 }
 
 void MainWindow::onTabSelected(TabItem *tab){
     WebEngineView *view = tabMap.value(tab);
     if(view){
         stackedWebArea->setCurrentWidget(view);
+        currentWebEngineView = view;
+        navigationBar->setSearchbarText(view->getUrl().toDisplayString());
     }
 }
 
