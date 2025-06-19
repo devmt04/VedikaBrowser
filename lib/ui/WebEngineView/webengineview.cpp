@@ -43,6 +43,7 @@ QUrl WebEngineView::getUrl() const {
 
 void WebEngineView::onUrlChanged(const QUrl &url){
     // use lambda instead
+    // sending senderView in case multiple WebEngineView emit at same time
     emit urlChanged(url.toDisplayString(), this);
 }
 

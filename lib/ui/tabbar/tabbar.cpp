@@ -5,6 +5,7 @@ TabBar::TabBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TabBar)
 {
+    // TODO : Remove tabVector
 
     //  [<] [Tab1][Tab2][Tab3][+] [>]
 

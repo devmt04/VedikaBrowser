@@ -7,13 +7,14 @@ MainWindow::MainWindow(QWidget *parent)
     /*, ui(new Ui::MainWindow)*/
 {
     /*
-    MainWindow (QMainWindow)
-    └── centralWidget (QWidget)
-        └── QVBoxLayout (centralLayout)
-            ├── tabBar (TabBar)
-            ├── navigationBar (NavigationBar)
-            └── webEngineView (WebEngineView)
-    */
+MainWindow (QMainWindow)
+└── centralWidget (QWidget)
+    └── QVBoxLayout (centralLayout)
+        ├── tabBar (TabBar)
+        ├── navigationBar (NavigationBar)
+        └── stackedWebArea (QStackedWidget)
+            └── multiple WebEngineView *
+*/
 
     // this->setWindowFlags(Qt::Popup);
     // this->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -54,12 +55,12 @@ MainWindow::MainWindow(QWidget *parent)
     // TODO : Make window frameless and add ability to make it move, resize from corners
     // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
 
-    // TODO : MANAGE DEFUALT TABITEM DELETE, SELECT EVENT
+    // TODO : MANAGE DEFUALT TABITEM DELETE
 }
 
 MainWindow::~MainWindow()
 {
-    // delete ui;
+// delete ui;
 }
 
 
@@ -69,37 +70,49 @@ void MainWindow::onSearchRequested(const QUrl &url){
 }
 
 void MainWindow::onNewTabAdded(TabItem *tab){
-    WebEngineView *webWidget = new WebEngineView(stackedWebArea);
-    stackedWebArea->addWidget(webWidget);
-    stackedWebArea->setCurrentWidget(webWidget);
+    WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
+    stackedWebArea->addWidget(newWebWidget);
+    stackedWebArea->setCurrentWidget(newWebWidget);
 
-    tabMap.insert(tab, webWidget);
+    // tabMap.insert(tab, newWebWidget);
+    TabSession session;
+    session.tabItem = tab;
+    session.webEngineView = newWebWidget;
+    tabSessions.append(session);
 
-    connect(webWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    currentWebEngineView = webWidget;
+    connect(newWebWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
+    currentWebEngineView = newWebWidget;
     navigationBar->setSearchbarText("");
 
-    connect(webWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
+    connect(newWebWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
         tab->setTitle(new_title);
     });
 }
 
 void MainWindow::onTabSelected(TabItem *tab){
-    WebEngineView *view = tabMap.value(tab);
-    if(view){
-        stackedWebArea->setCurrentWidget(view);
-        currentWebEngineView = view;
-        navigationBar->setSearchbarText(view->getUrl().toDisplayString());
+    // WebEngineView *view = tabMap.value(tab);
+    for(const TabSession &session : tabSessions){
+        if(session.tabItem == tab){
+            stackedWebArea->setCurrentWidget(session.webEngineView);
+            currentWebEngineView = session.webEngineView;
+            navigationBar->setSearchbarText(session.webEngineView->getUrl().toDisplayString());
+            break;
+        }
     }
+    // can be optimize this later with a helper method or std::ranges.
 }
 
 void MainWindow::onTabClosed(TabItem *tab){
-    WebEngineView *view = tabMap.take(tab); // .take() will also remove the tab
-    if(view){
-        stackedWebArea->removeWidget(view);
-        view->deleteLater();
+    for (int i = 0; i < tabSessions.size(); ++i) {
+        if (tabSessions[i].tabItem == tab) {
+            WebEngineView *view = tabSessions[i].webEngineView;
+
+            stackedWebArea->removeWidget(view);
+            view->deleteLater();
+
+            tabSessions.removeAt(i);
+            break;
+        }
     }
-    // TODO : HANDLE currentWebEngineView, handle navbar url
+    // TODO : Impliment a helper class for webEngineView look ups
 }
-
-

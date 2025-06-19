@@ -20,7 +20,7 @@ public:
     // QIcon getFavicon() const;
 
 signals:
-    void urlChanged(const QString &url, WebEngineView *self);
+    void urlChanged(const QString &url, WebEngineView *senderView);
     void titleChanged(const QString &new_title);
 
 private slots:

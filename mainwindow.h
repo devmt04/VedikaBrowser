@@ -5,7 +5,7 @@
 #include <QFile>
 #include <QVBoxLayout>
 #include <QStackedWidget>
-#include <QMap>
+#include <QVector>
 #include "./lib/ui/navigationbar/navigationbar.h"
 #include "./lib/ui/WebEngineView/webengineview.h"
 #include "./lib/ui/tabbar/tabbar.h"
@@ -41,6 +41,12 @@ private:
     QStackedWidget *stackedWebArea;
     WebEngineView *defaultWebEngineView;
     WebEngineView *currentWebEngineView;
-    QMap<TabItem*, WebEngineView*> tabMap;
+    // QMap<TabItem*, WebEngineView*> tabMap;
+
+    struct TabSession {
+        TabItem *tabItem;
+        WebEngineView *webEngineView;
+    };
+    QVector<TabSession> tabSessions;
 };
 #endif // MAINWINDOW_H
