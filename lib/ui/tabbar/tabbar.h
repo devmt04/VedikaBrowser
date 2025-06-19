@@ -23,13 +23,14 @@ class TabBar : public QWidget
 public:
     explicit TabBar(QWidget *parent = nullptr);
     ~TabBar();
+    void setTabTitle(int index, const QString &title);
 
 // protected:
 //     void mouseDoubleClickEvent(QMouseEvent *event) override;
 signals:
-    void newTabAdded(TabItem *tab);
-    void tabClosed(TabItem *tab);
-    void tabSelected(TabItem *tab);
+    void newTabAdded(int tabIndex);
+    void tabClosed(int tabIndex);
+    void tabSelected(int tabIndex);
 
 private slots:
     void addNewTab();

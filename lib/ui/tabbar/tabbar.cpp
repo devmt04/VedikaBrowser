@@ -110,18 +110,32 @@ void TabBar::addNewTab(){
     connect(tab, &TabItem::tabClicked, this, &TabBar::selectTab);
     tabContainerHBoxLayout->addWidget(tab);
     tabVector.append(tab);
-    emit newTabAdded(tab);
+    qDebug() << tabVector.indexOf(tab);
+    emit newTabAdded(tabVector.indexOf(tab));
 }
 
 void TabBar::closeTab(TabItem *tab){
+    int index = tabVector.indexOf(tab);
+    if (index == -1) return;
+
+    tabVector.removeAt(index);
     tabContainerHBoxLayout->removeWidget(tab);
-    tabVector.removeOne(tab);
     tab->deleteLater();
-    emit tabClosed(tab);
+
+    emit tabClosed(index);
 }
 
 void TabBar::selectTab(TabItem *tab){
-    emit tabSelected(tab);
+    int index = tabVector.indexOf(tab);
+    if (index >= 0) {
+        emit tabSelected(index);
+    }
+}
+
+void TabBar::setTabTitle(int index, const QString &title) {
+    if (index >= 0) {
+        tabVector[index]->setTitle(title);
+    }
 }
 
 // void TabBar::mouseDoubleClickEvent(QMouseEvent *event){

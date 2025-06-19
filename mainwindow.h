@@ -27,9 +27,9 @@ public:
 
 private slots:
     void onSearchRequested(const QUrl &url);
-    void onNewTabAdded(TabItem *tab);
-    void onTabClosed(TabItem *tab);
-    void onTabSelected(TabItem *tab);
+    void onNewTabAdded(int tabIndex);
+    void onTabClosed(int tabIndex);
+    void onTabSelected(int tabIndex);
 
 private:
     // Ui::MainWindow *ui;
@@ -41,12 +41,7 @@ private:
     QStackedWidget *stackedWebArea;
     WebEngineView *defaultWebEngineView;
     WebEngineView *currentWebEngineView;
-    // QMap<TabItem*, WebEngineView*> tabMap;
 
-    struct TabSession {
-        TabItem *tabItem;
-        WebEngineView *webEngineView;
-    };
-    QVector<TabSession> tabSessions;
+    QVector<WebEngineView*> webEngineViewVector;
 };
 #endif // MAINWINDOW_H
