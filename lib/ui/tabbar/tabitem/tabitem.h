@@ -22,6 +22,8 @@ public:
                      const QPixmap &pixmap = QPixmap(":/lib/resources/icon/searchengines/google-color.svg"));
     ~TabItem();
 
+    void setTitle(const QString &new_title);
+
 signals:
     void tabClosed(TabItem *self);
     void tabClicked(TabItem *self);
@@ -40,9 +42,6 @@ private:
     QLabel *favicon;
     QLabel *title;
     QPushButton *closeTabButton;
-
-    void setTitle(const QString &new_title);
-
 };
 
 #endif // TABITEM_H

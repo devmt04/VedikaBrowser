@@ -17,12 +17,15 @@ public:
     ~WebEngineView();
     void loadUrl(const QUrl &url);
     QUrl getUrl() const;
+    // QIcon getFavicon() const;
 
 signals:
-    void urlChanged(const QString &url);
+    void urlChanged(const QString &url, WebEngineView *self);
+    void titleChanged(const QString &new_title);
 
 private slots:
     void onUrlChanged(const QUrl &url);
+    void onTitleChanged(const QString &title);
 
 private:
     // Ui::WebEngineView *ui;

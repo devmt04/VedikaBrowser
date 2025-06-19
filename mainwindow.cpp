@@ -77,18 +77,11 @@ void MainWindow::onNewTabAdded(TabItem *tab){
 
     connect(webWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
     currentWebEngineView = webWidget;
-    navigationBar->setSearchbarText(webWidget->getUrl().toDisplayString());
-    qDebug() << webWidget->getUrl().toDisplayString();
-} // TODO : change it as per tab clicks
+    navigationBar->setSearchbarText("");
 
-
-void MainWindow::onTabClosed(TabItem *tab){
-    WebEngineView *view = tabMap.take(tab); // .take() will also remove the tab
-    if(view){
-        stackedWebArea->removeWidget(view);
-        view->deleteLater();
-    }
-    // TODO : HANDLE currentWebEngineView
+    connect(webWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
+        tab->setTitle(new_title);
+    });
 }
 
 void MainWindow::onTabSelected(TabItem *tab){
@@ -99,4 +92,14 @@ void MainWindow::onTabSelected(TabItem *tab){
         navigationBar->setSearchbarText(view->getUrl().toDisplayString());
     }
 }
+
+void MainWindow::onTabClosed(TabItem *tab){
+    WebEngineView *view = tabMap.take(tab); // .take() will also remove the tab
+    if(view){
+        stackedWebArea->removeWidget(view);
+        view->deleteLater();
+    }
+    // TODO : HANDLE currentWebEngineView, handle navbar url
+}
+
 

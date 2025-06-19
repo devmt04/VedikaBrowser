@@ -23,6 +23,7 @@ WebEngineView::WebEngineView(QWidget *parent)
     webEngineView->load(QUrl("qrc:/lib/resources/webpages/startup_light.html"));
 
     connect(webEngineView, &QWebEngineView::urlChanged,this, &WebEngineView::onUrlChanged);
+    connect(webEngineView, &QWebEngineView::titleChanged, this, &WebEngineView::onTitleChanged);
 }
 
 WebEngineView::~WebEngineView()
@@ -35,12 +36,17 @@ void WebEngineView::loadUrl(const QUrl &url){
     webEngineView->setFocus();
 }
 
-void WebEngineView::onUrlChanged(const QUrl &url){
-    // use lambda instead
-    emit urlChanged(url.toDisplayString());
-}
-
 QUrl WebEngineView::getUrl() const {
     return webEngineView->url();
+}
+
+
+void WebEngineView::onUrlChanged(const QUrl &url){
+    // use lambda instead
+    emit urlChanged(url.toDisplayString(), this);
+}
+
+void WebEngineView::onTitleChanged(const QString &title){
+    emit titleChanged(title);
 }
 
