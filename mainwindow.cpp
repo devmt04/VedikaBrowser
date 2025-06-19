@@ -86,8 +86,8 @@ void MainWindow::onNewTabAdded(int tabIndex){
         tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
     });
 
-    currentWebEngineView = newWebWidget;
-    navigationBar->setSearchbarText("");
+    // currentWebEngineView = newWebWidget;
+    // navigationBar->setSearchbarText("");
 }
 
 void MainWindow::onTabSelected(int tabIndex){

@@ -101,7 +101,9 @@ void TabBar::addNewTab(){
     connect(tab, &TabItem::tabClicked, this, &TabBar::selectTab);
     tabContainerHBoxLayout->addWidget(tab);
     tabVector.append(tab);
-    emit newTabAdded(tabVector.indexOf(tab));
+    int index = tabVector.indexOf(tab);
+    emit newTabAdded(index);
+    emit tabSelected(index);
 }
 
 void TabBar::closeTab(TabItem *tab){
