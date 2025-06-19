@@ -87,10 +87,26 @@ void TabItem::onCloseButtonPressed(){
 
 void TabItem::mousePressEvent(QMouseEvent *event){
     QWidget::mousePressEvent(event); // Preserves base behaviour
-    // qDebug() << "click";
     emit tabClicked(this);
 }
 
 void TabItem::setTitle(const QString &new_title){
     title->setText(new_title);
+}
+
+void TabItem::setFavicon(const QPixmap &new_pixmap){
+    if(!new_pixmap.isNull()){
+        favicon->setPixmap(new_pixmap.scaled(
+            favicon->size(),               // scale to label size
+            Qt::KeepAspectRatio,          // maintain aspect ratio
+            Qt::SmoothTransformation));
+    }else{
+        favicon->setPixmap(QPixmap(":/lib/resources/icon/favicon_load_black.svg").scaled(
+            favicon->size(),               // scale to label size
+            Qt::KeepAspectRatio,          // maintain aspect ratio
+            Qt::SmoothTransformation));
+    }
+
+    // TODO : Show loading animation while favicon is loaded i.e, is null
+        // cache favicon for frequently visited sites
 }

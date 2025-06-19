@@ -30,12 +30,6 @@ MainWindow (QMainWindow)
     navigationBar = new NavigationBar(centralWidget);
     stackedWebArea = new QStackedWidget(centralWidget);
 
-    defaultWebEngineView = new WebEngineView(stackedWebArea);
-    currentWebEngineView = defaultWebEngineView;
-
-    stackedWebArea->addWidget(defaultWebEngineView);
-    stackedWebArea->setCurrentWidget(defaultWebEngineView);
-
     centralLayout->setContentsMargins(0,0,0,0);
     centralLayout->setSpacing(0);
 
@@ -47,15 +41,22 @@ MainWindow (QMainWindow)
     connect(tabBar, &TabBar::tabClosed, this, &MainWindow::onTabClosed);
     connect(tabBar, &TabBar::tabSelected, this, &MainWindow::onTabSelected);
     connect(navigationBar, &NavigationBar::searchRequested, this, &MainWindow::onSearchRequested);
-    connect(defaultWebEngineView, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
 
     this->setCentralWidget(centralWidget);
     this->showMaximized();
+
+    // default tab
+    tabBar->addNewTab();
+
+
     // this->setWindowFlags(Qt::FramelessWindowHint);
     // TODO : Make window frameless and add ability to make it move, resize from corners
     // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
 
     // TODO : MANAGE DEFUALT TABITEM DELETE
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -70,25 +71,23 @@ void MainWindow::onSearchRequested(const QUrl &url){
 }
 
 void MainWindow::onNewTabAdded(int tabIndex){
+    qDebug() << tabIndex;
     WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
     stackedWebArea->addWidget(newWebWidget);
     stackedWebArea->setCurrentWidget(newWebWidget);
 
-    // TabSession session;
-    // session.tabItem = tab;
-    // session.webEngineView = newWebWidget;
-    // tabSessions.append(session);
-    // tabSessions.insert(tabIndex, TabSession{tabBar->getTabItem(index), webWidget});
     webEngineViewVector.insert(tabIndex, newWebWidget);
 
     connect(newWebWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    currentWebEngineView = newWebWidget;
-    navigationBar->setSearchbarText("");
-
     connect(newWebWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
-        // tab->setTitle(new_title);
         tabBar->setTabTitle(tabIndex, new_title);
     });
+    connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
+        tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
+    });
+
+    currentWebEngineView = newWebWidget;
+    navigationBar->setSearchbarText("");
 }
 
 void MainWindow::onTabSelected(int tabIndex){
@@ -100,16 +99,6 @@ void MainWindow::onTabSelected(int tabIndex){
     }else{
         qDebug() << "select tab : tab out of index!";
     }
-
-    // for(const TabSession &session : tabSessions){
-    //     if(session.tabItem == tab){
-    //         stackedWebArea->setCurrentWidget(session.webEngineView);
-    //         currentWebEngineView = session.webEngineView;
-    //         navigationBar->setSearchbarText(session.webEngineView->getUrl().toDisplayString());
-    //         break;
-    //     }
-    // }
-    // can be optimize this later with a helper method or std::ranges.
 }
 
 void MainWindow::onTabClosed(int tabIndex){
@@ -117,20 +106,12 @@ void MainWindow::onTabClosed(int tabIndex){
         WebEngineView *view = webEngineViewVector.takeAt(tabIndex);
         stackedWebArea->removeWidget(view);
         view->deleteLater();
+        if(webEngineViewVector.size() == 0){
+            tabBar->addNewTab();
+            // TODO : CLOSE APPLICATION INSTEAD
+            qDebug() << "new tab added when none left";
+        }
     }else{
         qDebug() << "Delete tab: tab out of index!";
     }
-
-    // for (int i = 0; i < tabSessions.size(); ++i) {
-    //     if (tabSessions[i].tabItem == tab) {
-    //         WebEngineView *view = tabSessions[i].webEngineView;
-
-    //         stackedWebArea->removeWidget(view);
-    //         view->deleteLater();
-
-    //         tabSessions.removeAt(i);
-    //         break;
-    //     }
-    // }
-    // TODO : Impliment a helper class for webEngineView look ups
 }

@@ -24,6 +24,7 @@ public:
     explicit TabBar(QWidget *parent = nullptr);
     ~TabBar();
     void setTabTitle(int index, const QString &title);
+    void setTabFavicon(int index, const QPixmap &pixmap);
 
 // protected:
 //     void mouseDoubleClickEvent(QMouseEvent *event) override;
@@ -32,8 +33,10 @@ signals:
     void tabClosed(int tabIndex);
     void tabSelected(int tabIndex);
 
-private slots:
+public slots:
     void addNewTab();
+
+private slots:
     void closeTab(TabItem *tab);
     void selectTab(TabItem *tab);
 

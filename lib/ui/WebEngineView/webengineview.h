@@ -22,10 +22,12 @@ public:
 signals:
     void urlChanged(const QString &url, WebEngineView *senderView);
     void titleChanged(const QString &new_title);
+    void faviconChanged(const QIcon &new_favicon);
 
 private slots:
     void onUrlChanged(const QUrl &url);
     void onTitleChanged(const QString &title);
+    void onFaviconChanged(const QIcon &new_favicon);
 
 private:
     // Ui::WebEngineView *ui;

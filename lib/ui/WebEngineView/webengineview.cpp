@@ -24,6 +24,7 @@ WebEngineView::WebEngineView(QWidget *parent)
 
     connect(webEngineView, &QWebEngineView::urlChanged,this, &WebEngineView::onUrlChanged);
     connect(webEngineView, &QWebEngineView::titleChanged, this, &WebEngineView::onTitleChanged);
+    connect(webEngineView, &QWebEngineView::iconChanged, this, &WebEngineView::onFaviconChanged);
 }
 
 WebEngineView::~WebEngineView()
@@ -49,5 +50,9 @@ void WebEngineView::onUrlChanged(const QUrl &url){
 
 void WebEngineView::onTitleChanged(const QString &title){
     emit titleChanged(title);
+}
+
+void WebEngineView::onFaviconChanged(const QIcon &new_favicon){
+    emit faviconChanged(new_favicon);
 }
 

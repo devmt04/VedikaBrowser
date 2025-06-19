@@ -23,6 +23,7 @@ public:
     ~TabItem();
 
     void setTitle(const QString &new_title);
+    void setFavicon(const QPixmap &new_pixmap);
 
 signals:
     void tabClosed(TabItem *self);

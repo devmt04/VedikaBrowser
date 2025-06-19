@@ -8,5 +8,6 @@
         <file>lib/resources/icon/arrow_back_black.svg</file>
         <file>lib/resources/icon/cross_black.svg</file>
         <file>lib/resources/icon/add_black.svg</file>
+        <file>lib/resources/icon/favicon_load_black.svg</file>
     </qresource>
 </RCC>

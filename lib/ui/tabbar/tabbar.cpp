@@ -24,6 +24,8 @@ TabBar::TabBar(QWidget *parent)
     └── QPushButton (Exit)
     */
 
+    tabVector.clear();
+
     // ui->setupUi(this);
     this->setStyleSheet("QWidget{background-color:#FFE5BF;}");
 
@@ -79,15 +81,6 @@ TabBar::TabBar(QWidget *parent)
     tabContainer->setLayout(tabContainerHBoxLayout);
     // -- end --
 
-
-    // In tabContainer - tabContainerHBoxLayout
-    defaultTabItem = new TabItem(tabContainer);
-    connect(defaultTabItem, &TabItem::tabClosed, this, &TabBar::closeTab);
-    connect(defaultTabItem, &TabItem::tabClicked, this, &TabBar::selectTab);
-    tabContainerHBoxLayout->addWidget(defaultTabItem);
-    // -- end --
-
-
     tabHBoxLayout->addWidget(tabScrollArea);
     tabHBoxLayout->addWidget(addNewTabButton);
 
@@ -95,8 +88,6 @@ TabBar::TabBar(QWidget *parent)
 
     topHBoxLayout->addWidget(customTabBarWidget);
     topHBoxLayout->addWidget(applicationExitButton);
-
-    tabVector.clear();
 }
 
 TabBar::~TabBar()
@@ -110,7 +101,6 @@ void TabBar::addNewTab(){
     connect(tab, &TabItem::tabClicked, this, &TabBar::selectTab);
     tabContainerHBoxLayout->addWidget(tab);
     tabVector.append(tab);
-    qDebug() << tabVector.indexOf(tab);
     emit newTabAdded(tabVector.indexOf(tab));
 }
 
@@ -137,6 +127,14 @@ void TabBar::setTabTitle(int index, const QString &title) {
         tabVector[index]->setTitle(title);
     }
 }
+
+void TabBar::setTabFavicon(int index, const QPixmap &pixmap){
+    if (index >= 0) {
+        tabVector[index]->setFavicon(pixmap);
+    }
+}
+
+
 
 // void TabBar::mouseDoubleClickEvent(QMouseEvent *event){
 //     QWidget *mainWindow = this->window();
