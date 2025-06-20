@@ -103,6 +103,9 @@ void MainWindow::onTabSelected(int tabIndex){
         stackedWebArea->setCurrentWidget(view);
         currentWebEngineView = view;
         navigationBar->setSearchbarText(view->getUrl().toDisplayString());
+
+        tabBar->setCurrentTab(tabIndex);
+
     }else{
         qDebug() << "select tab : tab out of index!";
     }

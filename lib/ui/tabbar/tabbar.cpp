@@ -27,15 +27,17 @@ TabBar::TabBar(QWidget *parent)
     tabVector.clear();
 
     // ui->setupUi(this);
-    this->setStyleSheet("QWidget{background-color:#FFE5BF;}");
+    this->setStyleSheet("QWidget{background-color:#FFE5BF;border:none;}");
 
     topHBoxLayout = new QHBoxLayout(this);
     topHBoxLayout->setContentsMargins(0,0,0,0);
+    // topHBoxLayout->setAlignment(Qt::AlignBottom);
     this->setLayout(topHBoxLayout);
 
     // In topHBoxLayout
     customTabBarWidget = new QWidget(this);
     tabHBoxLayout = new QHBoxLayout(customTabBarWidget);
+    // tabHBoxLayout->setAlignment(Qt::AlignBottom);
     tabHBoxLayout->setContentsMargins(0,0,0,0);
     // tabHBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
     customTabBarWidget->setLayout(tabHBoxLayout);
@@ -56,11 +58,12 @@ TabBar::TabBar(QWidget *parent)
 
     // In customTabBarWidget - tabHBoxLayout
     tabScrollArea = new QScrollArea(customTabBarWidget);
-    // tabScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    tabScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tabScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tabScrollArea->setWidgetResizable(true);
     tabScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Don't expand horizontally
     tabScrollArea->setFixedHeight(40);
+    // tabScrollArea->setAlignment(Qt::AlignBottom);
 
     addNewTabButton = new QPushButton(QIcon(":/lib/resources/icon/add_black.svg"), "", customTabBarWidget);
     addNewTabButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -71,12 +74,13 @@ TabBar::TabBar(QWidget *parent)
     // In tabScrollArea
     tabContainer = new QWidget();
     tabContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Important
-    tabContainer->setMaximumHeight(40);
+    // tabContainer->setMaximumHeight(40);
+    tabContainer->setFixedHeight(40);
 
     tabContainerHBoxLayout = new QHBoxLayout(tabContainer);
     tabContainerHBoxLayout->setContentsMargins(0,0,0,0);
-    tabContainerHBoxLayout->setSpacing(3);  // or small spacing like 4
-    tabContainerHBoxLayout->setAlignment(Qt::AlignLeft);
+    tabContainerHBoxLayout->setSpacing(3);
+    tabContainerHBoxLayout->setAlignment(Qt::AlignBottom);
     tabContainer->setLayout(tabContainerHBoxLayout);
     // -- end --
 
@@ -135,6 +139,11 @@ void TabBar::setTabFavicon(int index, const QPixmap &pixmap){
     }
 }
 
+void TabBar::setCurrentTab(int index){
+    for (int i = 0; i < tabVector.size(); ++i) {
+        tabVector[i]->setSelected(i == index);
+    }
+}
 
 
 // void TabBar::mouseDoubleClickEvent(QMouseEvent *event){

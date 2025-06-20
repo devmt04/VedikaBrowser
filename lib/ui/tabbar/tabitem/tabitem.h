@@ -24,6 +24,7 @@ public:
 
     void setTitle(const QString &new_title);
     void setFavicon(const QPixmap &new_pixmap);
+    void setSelected(bool selected);
 
 signals:
     void tabClosed(TabItem *self);

@@ -1,6 +1,7 @@
 #include "tabitem.h"
 #include "ui_tabitem.h"
 #include <QDebug>
+#include <QStyle>
 
 TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pixmap)
     : QWidget(parent)
@@ -18,11 +19,8 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
 
     // TODO : FIX MARGIN AND ALIGNMENTS
 
-    // DEBUG
-    this->setObjectName("name1");
     this->setAttribute(Qt::WA_StyledBackground, true);
-    this->setStyleSheet("QWidget#name1{border:1px solid blue;}");
-    // DEBUG-END
+
 
     this->setFixedHeight(35);
     this->setMaximumWidth(220);
@@ -69,10 +67,10 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     // favicon->setContentsMargins(5, 0, 0, 0);
    // title->setContentsMargins(5, 0, 5, 0);
    // closeTabButton->setContentsMargins(5, 0, 5, 0);
-
     hboxLayout->addWidget(favicon);
     hboxLayout->addWidget(title);
     hboxLayout->addWidget(closeTabButton);
+
 }
 
 TabItem::~TabItem()
@@ -109,4 +107,14 @@ void TabItem::setFavicon(const QPixmap &new_pixmap){
 
     // TODO : Show loading animation while favicon is loaded i.e, is null
         // cache favicon for frequently visited sites
+}
+
+void TabItem::setSelected(bool selected){
+    if (selected)
+        setStyleSheet(R"(background-color: #FDF6EC;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;)");
+    else
+        setStyleSheet("background-color: none;");
 }

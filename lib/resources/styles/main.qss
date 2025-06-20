@@ -14,8 +14,7 @@ QWidget#SearchBarContainer{
 }
 
 QWidget#NaviBarContainer{
-    background-color:#FDF6EC;
-/*    border-top: 1px solid #F5BD8A;*/
+    background-color:#FDF6EC;   
 }
 
 QPushButton[class="borderless"] {
@@ -41,6 +40,8 @@ QPushButton#closeTabButton:hover{
     border-radius:100%;
     background-color:red;
 }
+
+
 
 QTabBar::tab {
     background: #FFE5BF;

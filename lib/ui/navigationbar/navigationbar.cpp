@@ -14,6 +14,7 @@ NavigationBar::NavigationBar(QWidget *parent)
         └── SearchBar (searchBar)
     */
     // ui->setupUi(this);
+
     this->setObjectName("NaviBarContainer");
     this->setAttribute(Qt::WA_StyledBackground, true);
 

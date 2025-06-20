@@ -25,6 +25,7 @@ public:
     ~TabBar();
     void setTabTitle(int index, const QString &title);
     void setTabFavicon(int index, const QPixmap &pixmap);
+    void setCurrentTab(int index);
 
 // protected:
 //     void mouseDoubleClickEvent(QMouseEvent *event) override;
