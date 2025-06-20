@@ -40,7 +40,23 @@ MainWindow (QMainWindow)
     connect(tabBar, &TabBar::newTabAdded, this, &MainWindow::onNewTabAdded);
     connect(tabBar, &TabBar::tabClosed, this, &MainWindow::onTabClosed);
     connect(tabBar, &TabBar::tabSelected, this, &MainWindow::onTabSelected);
+
     connect(navigationBar, &NavigationBar::searchRequested, this, &MainWindow::onSearchRequested);
+    connect(navigationBar, &NavigationBar::pageBack, this, [this](){
+        if(currentWebEngineView!=nullptr){
+            currentWebEngineView->back();
+        }
+    });
+    connect(navigationBar, &NavigationBar::pageForward, this, [this](){
+        if(currentWebEngineView!=nullptr){
+            currentWebEngineView->forward();
+        }
+    });
+    connect(navigationBar, &NavigationBar::pageReload, this, [this](){
+        if(currentWebEngineView!=nullptr){
+            currentWebEngineView->reload();
+        }
+    });
 
     this->setCentralWidget(centralWidget);
     this->showMaximized();
@@ -108,3 +124,7 @@ void MainWindow::onTabClosed(int tabIndex){
         qDebug() << "Delete tab: tab out of index!";
     }
 }
+
+
+// TODO :  QWidget* to QPointer
+    // Use lambda on connect()

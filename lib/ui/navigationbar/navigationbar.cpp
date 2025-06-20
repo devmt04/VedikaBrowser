@@ -20,15 +20,25 @@ NavigationBar::NavigationBar(QWidget *parent)
     horizontalLayout = new QHBoxLayout(this);
     this->setLayout(horizontalLayout);
 
-    naviBtnGrp = new NavigationButtonGroup(this);
+    naviButtonGrp = new NavigationButtonGroup(this);
     searchBar = new SearchBar(this);
 
     connect(searchBar, &SearchBar::lineEditFocusIn, this, &NavigationBar::onSearchBarInFocus);
     connect(searchBar, &SearchBar::lineEditFocusOut, this, &NavigationBar::onSearchBarOutFocus);
     connect(searchBar, &SearchBar::lindEditReturnPress, this, &NavigationBar::onLineEditReturnPress);
 
+    connect(naviButtonGrp, &NavigationButtonGroup::back, this, [this](){
+        emit pageBack();
+    });
+    connect(naviButtonGrp, &NavigationButtonGroup::forward, this, [this](){
+        emit pageForward();
+    });
+    connect(naviButtonGrp, &NavigationButtonGroup::reload, this, [this](){
+        emit pageReload();
+    });
+
     horizontalLayout->setContentsMargins(3,5,5,5); // int left, int top, int right, int bottom
-    horizontalLayout->addWidget(naviBtnGrp);
+    horizontalLayout->addWidget(naviButtonGrp);
     horizontalLayout->addWidget(searchBar);
 
     // TODO : Handle double click event to miniize/maximize the Browser's Window

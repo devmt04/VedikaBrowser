@@ -40,7 +40,7 @@ private:
     NavigationBar *navigationBar;
     QStackedWidget *stackedWebArea;
     WebEngineView *defaultWebEngineView;
-    WebEngineView *currentWebEngineView;
+    WebEngineView *currentWebEngineView = nullptr; // or make it a QPointer
 
     QVector<WebEngineView*> webEngineViewVector;
 };

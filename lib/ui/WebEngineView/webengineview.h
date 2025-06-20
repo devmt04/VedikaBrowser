@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QtWebEngineWidgets/QWebEngineView>
+#include <QWebEngineHistory>
+
 namespace Ui {
 class WebEngineView;
 }
@@ -17,7 +19,9 @@ public:
     ~WebEngineView();
     void loadUrl(const QUrl &url);
     QUrl getUrl() const;
-    // QIcon getFavicon() const;
+    void back();
+    void forward();
+    void reload();
 
 signals:
     void urlChanged(const QString &url, WebEngineView *senderView);

@@ -17,6 +17,12 @@ public:
     explicit NavigationButtonGroup(QWidget *parent = nullptr);
     ~NavigationButtonGroup();
 
+signals:
+    void back();
+    void forward();
+    void reload();
+    void stop(); //
+
 private:
     Ui::NavigationButtonGroup *ui;
     QHBoxLayout *horizontalLayout;

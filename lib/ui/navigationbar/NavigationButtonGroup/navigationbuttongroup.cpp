@@ -29,6 +29,18 @@ NavigationButtonGroup::NavigationButtonGroup(QWidget *parent)
     forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_black.svg"));
     reloadButton->setIcon(QIcon(":/lib/resources/icon/reload_black.svg"));
 
+    connect(backButton, &QPushButton::clicked, this, [this](){
+        emit back();
+    });
+
+    connect(forwardButton, &QPushButton::clicked, this, [this](){
+        emit forward();
+    });
+
+    connect(reloadButton, &QPushButton::clicked, this, [this](){
+        emit reload();
+    });
+
     horizontalLayout->addWidget(backButton);
     horizontalLayout->addWidget(forwardButton);
     horizontalLayout->addWidget(reloadButton);

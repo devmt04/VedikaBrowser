@@ -42,6 +42,24 @@ QUrl WebEngineView::getUrl() const {
 }
 
 
+void WebEngineView::back(){
+    if (webEngineView->history()->canGoBack()) {
+        webEngineView->back();
+    } else {
+        qDebug() << "No page to go back to.";
+    }
+}
+void WebEngineView::forward(){
+    if (webEngineView->history()->canGoForward()) {
+        webEngineView->forward();
+    } else {
+        qDebug() << "No page to go forward to.";
+    }
+}
+void WebEngineView::reload(){
+    webEngineView->reload();
+}
+
 void WebEngineView::onUrlChanged(const QUrl &url){
     // use lambda instead
     // sending senderView in case multiple WebEngineView emit at same time

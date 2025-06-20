@@ -22,6 +22,9 @@ public:
 
 signals:
     void searchRequested(const QUrl &url);
+    void pageBack();
+    void pageForward();
+    void pageReload();
 
 // public slots:
 //     void setSearchbarText(const QString &text);
@@ -34,7 +37,7 @@ private slots:
 private:
     Ui::NavigationBar *ui;
     QHBoxLayout *horizontalLayout;
-    NavigationButtonGroup *naviBtnGrp;
+    NavigationButtonGroup *naviButtonGrp;
     SearchBar *searchBar;
 };
 
