@@ -95,6 +95,22 @@ void MainWindow::onNewTabAdded(int tabIndex){
     connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
         tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
     });
+    connect(newWebWidget, &WebEngineView::backButtonState, this, [=](bool state){
+        if(newWebWidget == currentWebEngineView){
+            qDebug() << "Signal B recvied";
+            navigationBar->setBackButtonState(state);
+        }else{
+            qDebug() << "B signalFailed";
+        }
+    });
+    connect(newWebWidget, &WebEngineView::forwardButtonState, this, [=](bool state){
+        if(newWebWidget == currentWebEngineView){
+            qDebug() << "Signal F recvied";
+            navigationBar->setForwardButtonState(state);
+        }else{
+            qDebug() << "F signalFailed";
+        }
+    });
 }
 
 void MainWindow::onTabSelected(int tabIndex){
@@ -103,9 +119,14 @@ void MainWindow::onTabSelected(int tabIndex){
         stackedWebArea->setCurrentWidget(view);
         currentWebEngineView = view;
         navigationBar->setSearchbarText(view->getUrl().toDisplayString());
-
         tabBar->setCurrentTab(tabIndex);
-
+        // if(checkHistoryNavigationState() == 1){
+        //     navigationBar->setBackButtonState(1);
+        //     navigationBar->setForwardButtonState(1);
+        // }else if(checkHistoryNavigationState == 2){
+        //     navigationBar->setBackButtonState(0);
+        //     navigationBar->setForwardButtonState(1);
+        // }
     }else{
         qDebug() << "select tab : tab out of index!";
     }

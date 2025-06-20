@@ -22,11 +22,18 @@ public:
     void back();
     void forward();
     void reload();
+    // void checkHistoryNavigationState();
 
 signals:
     void urlChanged(const QString &url, WebEngineView *senderView);
     void titleChanged(const QString &new_title);
     void faviconChanged(const QIcon &new_favicon);
+    void backButtonState(bool state);
+    void forwardButtonState(bool state);
+    // void canNotGoBack();
+    // void canGoBack();
+    // void canNotGoForward();
+    // void canNotGoBackward();
 
 private slots:
     void onUrlChanged(const QUrl &url);

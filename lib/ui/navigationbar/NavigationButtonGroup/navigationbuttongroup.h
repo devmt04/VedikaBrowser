@@ -16,6 +16,10 @@ class NavigationButtonGroup : public QWidget
 public:
     explicit NavigationButtonGroup(QWidget *parent = nullptr);
     ~NavigationButtonGroup();
+    void unsetForward();
+    void unsetBackward();
+    void setForward();
+    void setBackward();
 
 signals:
     void back();

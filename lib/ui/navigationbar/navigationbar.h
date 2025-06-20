@@ -19,6 +19,8 @@ public:
     explicit NavigationBar(QWidget *parent = nullptr);
     void setSearchbarText(const QString &text);
     ~NavigationBar();
+    void setBackButtonState(bool active);
+    void setForwardButtonState(bool active);
 
 signals:
     void searchRequested(const QUrl &url);

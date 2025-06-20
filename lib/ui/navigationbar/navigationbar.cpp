@@ -44,10 +44,24 @@ NavigationBar::NavigationBar(QWidget *parent)
 
     // TODO : Handle double click event to miniize/maximize the Browser's Window
 }
-
+//arrow_back_inactive.svg
 NavigationBar::~NavigationBar()
 {
     delete ui;
+}
+
+void NavigationBar::setBackButtonState(bool active){
+    if(active)
+        naviButtonGrp->setBackward();
+    else
+        naviButtonGrp->unsetBackward();
+}
+
+void NavigationBar::setForwardButtonState(bool active){
+    if(active)
+        naviButtonGrp->setForward();
+    else
+        naviButtonGrp->unsetForward();
 }
 
 void NavigationBar::onSearchBarInFocus(){
