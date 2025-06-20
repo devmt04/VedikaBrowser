@@ -42,7 +42,6 @@ TabBar::TabBar(QWidget *parent)
     customTabBarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Important
 
 
-
     applicationExitButton = new QPushButton(QIcon(":/lib/resources/icon/cross_black.svg"),  "",  this);
     applicationExitButton->setObjectName("applicationExitButton");
     applicationExitButton->setProperty("class", "borderless");

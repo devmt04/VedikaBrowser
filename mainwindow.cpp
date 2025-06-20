@@ -48,15 +48,9 @@ MainWindow (QMainWindow)
     // default tab
     tabBar->addNewTab();
 
-
     // this->setWindowFlags(Qt::FramelessWindowHint);
     // TODO : Make window frameless and add ability to make it move, resize from corners
     // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
-
-    // TODO : MANAGE DEFUALT TABITEM DELETE
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -71,7 +65,7 @@ void MainWindow::onSearchRequested(const QUrl &url){
 }
 
 void MainWindow::onNewTabAdded(int tabIndex){
-    qDebug() << tabIndex;
+    // qDebug() << tabIndex;
     WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
     stackedWebArea->addWidget(newWebWidget);
     stackedWebArea->setCurrentWidget(newWebWidget);
@@ -85,9 +79,6 @@ void MainWindow::onNewTabAdded(int tabIndex){
     connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
         tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
     });
-
-    // currentWebEngineView = newWebWidget;
-    // navigationBar->setSearchbarText("");
 }
 
 void MainWindow::onTabSelected(int tabIndex){
@@ -102,10 +93,12 @@ void MainWindow::onTabSelected(int tabIndex){
 }
 
 void MainWindow::onTabClosed(int tabIndex){
+    qDebug() << tabIndex;
     if(tabIndex >= 0){
         WebEngineView *view = webEngineViewVector.takeAt(tabIndex);
         stackedWebArea->removeWidget(view);
         view->deleteLater();
+        onTabSelected(tabIndex-1);
         if(webEngineViewVector.size() == 0){
             tabBar->addNewTab();
             // TODO : CLOSE APPLICATION INSTEAD
