@@ -1,3 +1,7 @@
+// Copyright (C) 2025 Mohit Deoli
+// SPDX-License-Identifier: GPL-3.0-only
+
+
 #ifndef NAVIGATIONBAR_H
 #define NAVIGATIONBAR_H
 

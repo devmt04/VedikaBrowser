@@ -1,3 +1,7 @@
+// Copyright (C) 2025 Mohit Deoli
+// SPDX-License-Identifier: GPL-3.0-only
+
+
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QDebug>

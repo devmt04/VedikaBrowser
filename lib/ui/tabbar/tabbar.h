@@ -1,6 +1,10 @@
 #ifndef TABBAR_H
 #define TABBAR_H
 
+// Copyright (C) 2025 Mohit Deoli
+// SPDX-License-Identifier: GPL-3.0-only
+
+
 #include <QWidget>
 #include <QTabBar>
 #include <QHBoxLayout>
