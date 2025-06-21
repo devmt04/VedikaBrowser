@@ -25,7 +25,7 @@ signals:
     void back();
     void forward();
     void reload();
-    void stop(); //
+    void stop(); // TODO
 
 private:
     Ui::NavigationButtonGroup *ui;

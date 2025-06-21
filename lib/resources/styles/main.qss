@@ -24,6 +24,9 @@ QPushButton[class="borderless"] {
 QPushButton#applicationExitButton{
     padding:3px;
 }
+QWidget#tabbar{
+    padding-right:12px;
+}
 
 QPushButton#applicationExitButton:hover{
     background-color: #FDF6EC;

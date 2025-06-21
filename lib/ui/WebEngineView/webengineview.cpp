@@ -45,41 +45,15 @@ QUrl WebEngineView::getUrl() const {
 void WebEngineView::back(){
     if (webEngineView->history()->canGoBack()) {
         webEngineView->back();
-    } else {
-        qDebug() << "No page to go back to.";
-        // emit canNotGoBackward();
     }
 }
 
 void WebEngineView::forward(){
     if (webEngineView->history()->canGoForward()) {
         webEngineView->forward();
-    } else {
-        qDebug() << "No page to go forward to.";
-        // emit canNotGoForward();
     }
 }
 
-// int WebEngineView::checkHistoryNavigationState(){
-    // if (webEngineView->history()->canGoForward() && webEngineView->history()->canGoBack()) {
-    //     // emit canGoForward();
-    //     return 1;
-    // } else if(!webEngineView->history()->canGoForward() && webEngineView->history()->canGoBack()){
-    //     // emit canNotGoForward();
-    //     return 2;
-    // }else if(webEngineView->history()->canGoForward() && !webEngineView->history()->canGoBack()){
-    //     return 3;
-    // }else{
-    //     return 4;
-    // }
-
-    // if (webEngineView->history()->canGoBack()) {
-    //     // emit canGoBack();
-    // } else {
-    //     qDebug() << "No page to go forward to.";
-    //     // emit canNotGoBack();
-    // }
-// }
 
 void WebEngineView::reload(){
     webEngineView->reload();
@@ -89,14 +63,9 @@ void WebEngineView::onUrlChanged(const QUrl &url){
     // use lambda instead
     // sending senderView in case multiple WebEngineView emit at same time
     emit urlChanged(url.toDisplayString(), this);
+
     emit backButtonState(webEngineView->history()->canGoBack());
     emit forwardButtonState(webEngineView->history()->canGoForward());
-    // if (webEngineView->history()->canGoBack()) {
-    //     emit backButtonState();
-    // } else {
-    //     qDebug() << "No page to go backward to.";
-    //     emit backButtonState(0);
-    // }
 }
 
 void WebEngineView::onTitleChanged(const QString &title){

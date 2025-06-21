@@ -8,9 +8,12 @@
 #include <QSizePolicy>
 #include <QMessageBox>
 #include <QScrollArea>
+#include <QScrollBar>
 #include "./tabitem/tabitem.h"
 
 #include <QVector>
+#include <QEvent>
+#include <QWheelEvent>
 
 namespace Ui {
 class TabBar;
@@ -27,8 +30,12 @@ public:
     void setTabFavicon(int index, const QPixmap &pixmap);
     void setCurrentTab(int index);
 
-// protected:
-//     void mouseDoubleClickEvent(QMouseEvent *event) override;
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+    // void mouseDoubleClickEvent(QMouseEvent *event) override;
+
+
 signals:
     void newTabAdded(int tabIndex);
     void tabClosed(int tabIndex);

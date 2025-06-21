@@ -27,9 +27,12 @@ TabBar::TabBar(QWidget *parent)
     tabVector.clear();
 
     // ui->setupUi(this);
+    // this->setObjectName("tabbar");
     this->setStyleSheet("QWidget{background-color:#FFE5BF;border:none;}");
+    // this->setStyleSheet("QWidget#tabbar{padding-right:12px;}");
 
     topHBoxLayout = new QHBoxLayout(this);
+    topHBoxLayout->setSpacing(0);
     topHBoxLayout->setContentsMargins(0,0,0,0);
     // topHBoxLayout->setAlignment(Qt::AlignBottom);
     this->setLayout(topHBoxLayout);
@@ -38,7 +41,7 @@ TabBar::TabBar(QWidget *parent)
     customTabBarWidget = new QWidget(this);
     tabHBoxLayout = new QHBoxLayout(customTabBarWidget);
     // tabHBoxLayout->setAlignment(Qt::AlignBottom);
-    tabHBoxLayout->setContentsMargins(0,0,0,0);
+    tabHBoxLayout->setContentsMargins(0,0,10,0); // left, top, right, bottom
     // tabHBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
     customTabBarWidget->setLayout(tabHBoxLayout);
     customTabBarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Important
@@ -47,7 +50,7 @@ TabBar::TabBar(QWidget *parent)
     applicationExitButton = new QPushButton(QIcon(":/lib/resources/icon/cross_black.svg"),  "",  this);
     applicationExitButton->setObjectName("applicationExitButton");
     applicationExitButton->setProperty("class", "borderless");
-    applicationExitButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    applicationExitButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     connect(applicationExitButton, &QPushButton::clicked, this, [=]() {
         if (QMessageBox::question(this, "Exit", "Are you sure you want to quit?") == QMessageBox::Yes) {
             qApp->quit();
@@ -63,6 +66,9 @@ TabBar::TabBar(QWidget *parent)
     tabScrollArea->setWidgetResizable(true);
     tabScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Don't expand horizontally
     tabScrollArea->setFixedHeight(40);
+
+    tabScrollArea->viewport()->installEventFilter(this);
+
     // tabScrollArea->setAlignment(Qt::AlignBottom);
 
     addNewTabButton = new QPushButton(QIcon(":/lib/resources/icon/add_black.svg"), "", customTabBarWidget);
@@ -145,6 +151,27 @@ void TabBar::setCurrentTab(int index){
     }
 }
 
+bool TabBar::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == tabScrollArea->viewport() && event->type() == QEvent::Wheel) {
+        QWheelEvent *wheelEvent = static_cast<QWheelEvent *>(event);
+
+        // Support both vertical wheel (like mouse) and horizontal delta (like trackpad)
+        int scrollDelta = wheelEvent->angleDelta().y();
+        if (scrollDelta == 0) {
+            scrollDelta = wheelEvent->angleDelta().x();
+        }
+
+        if (scrollDelta != 0) {
+            QScrollBar *hScroll = tabScrollArea->horizontalScrollBar();
+            int step = 30;
+            hScroll->setValue(hScroll->value() - (scrollDelta > 0 ? step : -step));
+            return true;
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
 
 // void TabBar::mouseDoubleClickEvent(QMouseEvent *event){
 //     QWidget *mainWindow = this->window();

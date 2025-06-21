@@ -44,7 +44,7 @@ NavigationBar::NavigationBar(QWidget *parent)
 
     // TODO : Handle double click event to miniize/maximize the Browser's Window
 }
-//arrow_back_inactive.svg
+
 NavigationBar::~NavigationBar()
 {
     delete ui;
@@ -76,7 +76,6 @@ void NavigationBar::onSearchBarOutFocus(){
 
 void NavigationBar::onLineEditReturnPress(const QUrl &url)
 {
-    // Emit Signal to webview
     emit searchRequested(url);
 }
 

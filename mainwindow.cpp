@@ -81,7 +81,6 @@ void MainWindow::onSearchRequested(const QUrl &url){
 }
 
 void MainWindow::onNewTabAdded(int tabIndex){
-    // qDebug() << tabIndex;
     WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
     stackedWebArea->addWidget(newWebWidget);
     stackedWebArea->setCurrentWidget(newWebWidget);
@@ -97,18 +96,12 @@ void MainWindow::onNewTabAdded(int tabIndex){
     });
     connect(newWebWidget, &WebEngineView::backButtonState, this, [=](bool state){
         if(newWebWidget == currentWebEngineView){
-            qDebug() << "Signal B recvied";
             navigationBar->setBackButtonState(state);
-        }else{
-            qDebug() << "B signalFailed";
         }
     });
     connect(newWebWidget, &WebEngineView::forwardButtonState, this, [=](bool state){
         if(newWebWidget == currentWebEngineView){
-            qDebug() << "Signal F recvied";
             navigationBar->setForwardButtonState(state);
-        }else{
-            qDebug() << "F signalFailed";
         }
     });
 }
@@ -120,13 +113,6 @@ void MainWindow::onTabSelected(int tabIndex){
         currentWebEngineView = view;
         navigationBar->setSearchbarText(view->getUrl().toDisplayString());
         tabBar->setCurrentTab(tabIndex);
-        // if(checkHistoryNavigationState() == 1){
-        //     navigationBar->setBackButtonState(1);
-        //     navigationBar->setForwardButtonState(1);
-        // }else if(checkHistoryNavigationState == 2){
-        //     navigationBar->setBackButtonState(0);
-        //     navigationBar->setForwardButtonState(1);
-        // }
     }else{
         qDebug() << "select tab : tab out of index!";
     }
@@ -149,6 +135,5 @@ void MainWindow::onTabClosed(int tabIndex){
     }
 }
 
-
-// TODO :  QWidget* to QPointer
-    // Use lambda on connect()
+// TODO : Enable Scrolling of tabs when overflowed
+   // Tab options on right click
