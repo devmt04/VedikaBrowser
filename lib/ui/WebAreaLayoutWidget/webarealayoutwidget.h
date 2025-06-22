@@ -11,17 +11,11 @@
 #include <QHBoxLayout>
 
 #include "./WebEngineView/webengineview.h"
+#include "./WebAreaLayoutManager/webarealayoutmanager.h"
 
 namespace Ui {
 class WebAreaLayoutWidget;
 }
-
-enum class LayoutMode {
-    Single = 0,
-    Split,
-    Grid,
-    Popup
-};
 
 class WebAreaLayoutWidget : public QWidget
 {
@@ -30,15 +24,14 @@ class WebAreaLayoutWidget : public QWidget
 public:
     explicit WebAreaLayoutWidget(QWidget *parent = nullptr);
     ~WebAreaLayoutWidget();
-    void addNewWebView(int index); // returns tab index
+    void addNewWebView(int index);
     void closeWebView(int index);
     void setCurrentWebView(int index);
     void loadUrl(const QUrl &url);
     void goBack();
     void goForward();
-    // WebEngineView* currentWebView() const;
     QUrl currentUrl() const;
-    void setLayoutMode(LayoutMode mode); // enum { Single, Split, Grid, Popup }
+    void setLayoutMode(int mode);
     int webviewVectorSize() const;
 
 signals:
@@ -51,7 +44,8 @@ signals:
 private:
     // Ui::WebAreaLayoutWidget *ui;
     QHBoxLayout *horizontalLayout;
-    QStackedWidget *stackedWebArea;
+    // QStackedWidget *stackedWebArea;
+    WebAreaLayoutManager *layoutManager;
     WebEngineView *currentWebEngineView = nullptr;
     QVector<WebEngineView*> webEngineViewVector;
 };

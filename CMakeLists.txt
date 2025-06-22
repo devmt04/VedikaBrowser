@@ -32,6 +32,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         lib/ui/tabbar/tabitem/tabitem.h lib/ui/tabbar/tabitem/tabitem.cpp lib/ui/tabbar/tabitem/tabitem.ui
         lib/ui/navigationbar/WebAreaLayoutController/webarealayoutcontroller.h lib/ui/navigationbar/WebAreaLayoutController/webarealayoutcontroller.cpp lib/ui/navigationbar/WebAreaLayoutController/webarealayoutcontroller.ui
         lib/ui/WebAreaLayoutWidget/webarealayoutwidget.h lib/ui/WebAreaLayoutWidget/webarealayoutwidget.cpp lib/ui/WebAreaLayoutWidget/webarealayoutwidget.ui
+        lib/ui/WebAreaLayoutWidget/WebAreaLayoutManager/webarealayoutmanager.h lib/ui/WebAreaLayoutWidget/WebAreaLayoutManager/webarealayoutmanager.cpp lib/ui/WebAreaLayoutWidget/WebAreaLayoutManager/webarealayoutmanager.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET VedikaWebBrowser APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

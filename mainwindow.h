@@ -44,10 +44,6 @@ private:
     // FramelessWindow<MainWindow> *window;
     TabBar *tabBar;
     NavigationBar *navigationBar;
-    // QStackedWidget *stackedWebArea;
     WebAreaLayoutWidget *webAreaLayout;
-    // WebEngineView *currentWebEngineView = nullptr; // or make it a QPointer
-
-    // QVector<WebEngineView*> webEngineViewVector;
 };
 #endif // MAINWINDOW_H

@@ -32,7 +32,6 @@ MainWindow (QMainWindow)
     tabBar = new TabBar(centralWidget);
     // tabBar = new FramelessWindow<TabBar>(false, centralWidget);
     navigationBar = new NavigationBar(centralWidget);
-    // stackedWebArea = new QStackedWidget(centralWidget);
     webAreaLayout = new WebAreaLayoutWidget(centralWidget);
 
     centralLayout->setContentsMargins(0,0,0,0);
@@ -48,9 +47,7 @@ MainWindow (QMainWindow)
 
     connect(navigationBar, &NavigationBar::searchRequested, this, &MainWindow::onSearchRequested);
     connect(navigationBar, &NavigationBar::pageBack, this, [this](){
-        // if(currentWebEngineView!=nullptr){
-        //     currentWebEngineView->back();
-        // }
+        webAreaLayout->goBack();
     });
     connect(navigationBar, &NavigationBar::pageForward, this, [this](){
         webAreaLayout->goForward();
@@ -98,50 +95,10 @@ void MainWindow::onSearchRequested(const QUrl &url){
 
 void MainWindow::onNewTabAdded(int tabIndex){
     webAreaLayout->addNewWebView(tabIndex);
-    // connect(webAreaLayout, &WebAreaLayoutWidget::webViewUrlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    // connect(webAreaLayout, &WebAreaLayoutWidget::webViewTitleChanged, this, [=](const QString &new_title){
-    //     tabBar->setTabTitle(tabIndex, new_title);
-    // });
-    // connect(webAreaLayout, &WebAreaLayoutWidget::webViewFaviconChanged, this, [=](const QIcon &favicon){
-    //     tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
-    // });
-    // connect(webAreaLayout, &WebAreaLayoutWidget::backButtonState, this, [=](bool enabled){
-    //     navigationBar->setBackButtonState(enabled);
-    // });
-    // connect(webAreaLayout, &WebAreaLayoutWidget::forwardButtonState, this, [=](bool enabled){
-    //     navigationBar->setForwardButtonState(enabled);
-    // });
-    // WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
-    // stackedWebArea->addWidget(newWebWidget);
-    // stackedWebArea->setCurrentWidget(newWebWidget);
-
-    // webEngineViewVector.insert(tabIndex, newWebWidget);
-
-    // connect(newWebWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    // connect(newWebWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
-    //     tabBar->setTabTitle(tabIndex, new_title);
-    // });
-    // connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
-    //     tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
-    // });
-    // connect(newWebWidget, &WebEngineView::backButtonState, this, [=](bool state){
-    //     if(newWebWidget == currentWebEngineView){
-    //         navigationBar->setBackButtonState(state);
-    //     }
-    // });
-    // connect(newWebWidget, &WebEngineView::forwardButtonState, this, [=](bool state){
-    //     if(newWebWidget == currentWebEngineView){
-    //         navigationBar->setForwardButtonState(state);
-    //     }
-    // });
 }
 
 void MainWindow::onTabSelected(int tabIndex){
-    qDebug() << "s "<< tabIndex;
     if(tabIndex >= 0){
-        // WebEngineView *view = webEngineViewVector.at(tabIndex);
-        // stackedWebArea->setCurrentWidget(view);
-        // currentWebEngineView = view;
         webAreaLayout->setCurrentWebView(tabIndex);
         navigationBar->setSearchbarText(webAreaLayout->currentUrl().toDisplayString());
         tabBar->setCurrentTab(tabIndex);
@@ -151,12 +108,7 @@ void MainWindow::onTabSelected(int tabIndex){
 }
 
 void MainWindow::onTabClosed(int tabIndex){
-    // qDebug() << tabIndex;
-    qDebug() << "c "<< tabIndex;
     if(tabIndex >= 0){
-        // WebEngineView *view = webEngineViewVector.takeAt(tabIndex);
-        // stackedWebArea->removeWidget(view);
-        // view->deleteLater();
         webAreaLayout->closeWebView(tabIndex);
         onTabSelected(tabIndex-1);
         if(webAreaLayout->webviewVectorSize() == 0){
@@ -175,13 +127,8 @@ void MainWindow::onTabClosed(int tabIndex){
 
 void MainWindow::onWebAreaLayoutChanged(int layout){
     // 0 = single view, 1 = split view, 2 = grid view, 3 = popup view
-    LayoutMode mode = static_cast<LayoutMode>(layout);
-    webAreaLayout->setLayoutMode(mode);
-    // if((layout == 1) && (webEngineViewVector.size() < 2)){
-    //     qDebug() << "Split view requires two or more tabs to be opened!";
-    //     // TODO : Instead open a default startup page
-    // }
-    // webEngineViewVector
+    // LayoutMode mode = static_cast<LayoutMode>(layout);
+    webAreaLayout->setLayoutMode(layout);
 }
 
 
