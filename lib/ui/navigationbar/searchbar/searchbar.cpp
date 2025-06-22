@@ -23,10 +23,10 @@ SearchBar::SearchBar(QWidget *parent)
 
     searchbarLayout = new QHBoxLayout(this);
     this->setLayout(searchbarLayout);
+    searchbarLayout->setContentsMargins(8, 0, 8, 0);
 
     searchEngineSwitchButton = new QPushButton(this);
     urlInputBar = new QLineEdit(this);
-
     // Search Engine Switch Button Properties
     searchEngineSwitchButton->setProperty("class", "borderless");
     searchEngineSwitchButton->setIcon(QIcon(":/lib/resources/icon/searchengines/google-color.svg"));

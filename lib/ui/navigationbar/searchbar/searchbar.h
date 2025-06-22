@@ -11,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QSizePolicy>
 
 namespace Ui {
 class SearchBar;

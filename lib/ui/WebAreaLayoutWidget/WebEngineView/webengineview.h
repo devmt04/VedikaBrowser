@@ -29,11 +29,11 @@ public:
     // void checkHistoryNavigationState();
 
 signals:
-    void urlChanged(const QString &url, WebEngineView *senderView);
+    void urlChanged(const QString &url);
     void titleChanged(const QString &new_title);
     void faviconChanged(const QIcon &new_favicon);
-    void backButtonState(bool state);
-    void forwardButtonState(bool state);
+    void backButtonState(bool enabled);
+    void forwardButtonState(bool enabled);
 
 private slots:
     void onUrlChanged(const QUrl &url);

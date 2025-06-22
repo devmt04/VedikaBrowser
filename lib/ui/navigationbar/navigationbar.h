@@ -7,9 +7,13 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
+#include <QDebug>
+#include <QSizePolicy>
 
 #include "./searchbar/searchbar.h"
 #include "./NavigationButtonGroup/navigationbuttongroup.h"
+#include "./WebAreaLayoutController/webarealayoutcontroller.h"
+
 
 namespace Ui {
 class NavigationBar;
@@ -31,6 +35,7 @@ signals:
     void pageBack();
     void pageForward();
     void pageReload();
+    void layoutChanged(int layout);
 
 // public slots:
 //     void setSearchbarText(const QString &text);
@@ -45,6 +50,7 @@ private:
     QHBoxLayout *horizontalLayout;
     NavigationButtonGroup *naviButtonGrp;
     SearchBar *searchBar;
+    WebAreaLayoutController *webareaLayoutController;
 };
 
 #endif // NAVIGATIONBAR_H

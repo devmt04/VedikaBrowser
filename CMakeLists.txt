@@ -25,11 +25,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         lib/ui/navigationbar/searchbar/searchbar.h lib/ui/navigationbar/searchbar/searchbar.cpp lib/ui/navigationbar/searchbar/searchbar.ui
         AppQRC.qrc
-        lib/ui/WebEngineView/webengineview.h lib/ui/WebEngineView/webengineview.cpp lib/ui/WebEngineView/webengineview.ui
+        lib/ui/WebAreaLayoutWidget/WebEngineView/webengineview.h lib/ui/WebAreaLayoutWidget/WebEngineView/webengineview.cpp     
         lib/ui/navigationbar/navigationbar.h lib/ui/navigationbar/navigationbar.cpp lib/ui/navigationbar/navigationbar.ui
         lib/ui/navigationbar/NavigationButtonGroup/navigationbuttongroup.h lib/ui/navigationbar/NavigationButtonGroup/navigationbuttongroup.cpp lib/ui/navigationbar/NavigationButtonGroup/navigationbuttongroup.ui
         lib/ui/tabbar/tabbar.h lib/ui/tabbar/tabbar.cpp lib/ui/tabbar/tabbar.ui
         lib/ui/tabbar/tabitem/tabitem.h lib/ui/tabbar/tabitem/tabitem.cpp lib/ui/tabbar/tabitem/tabitem.ui
+        lib/ui/navigationbar/WebAreaLayoutController/webarealayoutcontroller.h lib/ui/navigationbar/WebAreaLayoutController/webarealayoutcontroller.cpp lib/ui/navigationbar/WebAreaLayoutController/webarealayoutcontroller.ui
+        lib/ui/WebAreaLayoutWidget/webarealayoutwidget.h lib/ui/WebAreaLayoutWidget/webarealayoutwidget.cpp lib/ui/WebAreaLayoutWidget/webarealayoutwidget.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET VedikaWebBrowser APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

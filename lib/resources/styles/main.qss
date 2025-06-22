@@ -10,7 +10,7 @@ QLineEdit#urlInputBar {
 
 QWidget#SearchBarContainer{
     background-color: #FFDCA8;
-    border-radius: 7px;
+    border-radius: 13px;
 }
 
 QWidget#NaviBarContainer{
@@ -44,31 +44,12 @@ QPushButton#closeTabButton:hover{
     background-color:red;
 }
 
-
-
-QTabBar::tab {
-    background: #FFE5BF;
-/*    border: 1px solid #ccc;*/
-    padding: 6px 12px;
-/*    width: 120px;*/
-    max-width: 120px;
-    min-width: 50px;
-    border: none;
+QWidget#WebAreaLayoutControllerContainer{
+    background-color: #FFDCA8;
+    border-radius: 13px;
 }
 
-
-QTabBar::tab:selected {
-    background: #FDF6EC;
-    border-top: 1px solid #F5BD8A;
-    border-left : 1px solid #F5BD8A;
-    border-right : 1px solid #F5BD8A;
-    border-bottom-color: transparent;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-/*    font-weight: bold;*/
+QComboBox#webAreaLayoutController{
+    background-color: #FFDCA8;
+    border-radius : 10;
 }
-
-QTabBar::tab:hover {
-    background-color: #FFCE87;
-}
-

@@ -8,12 +8,13 @@
 #include <QMainWindow>
 #include <QFile>
 #include <QVBoxLayout>
-#include <QStackedWidget>
-#include <QVector>
+// #include <QStackedWidget>
+// #include <QVector>
 #include "./lib/ui/navigationbar/navigationbar.h"
-#include "./lib/ui/WebEngineView/webengineview.h"
+// #include "./lib/ui/WebEngineView/webengineview.h"
+// #include "./lib/ui/WebAreaLayoutWidget/WebEngineView/webengineview.h"
 #include "./lib/ui/tabbar/tabbar.h"
-#include "./lib/ui/tabbar/tabitem/tabitem.h"
+#include "./lib/ui/WebAreaLayoutWidget/webarealayoutwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -34,6 +35,7 @@ private slots:
     void onNewTabAdded(int tabIndex);
     void onTabClosed(int tabIndex);
     void onTabSelected(int tabIndex);
+    void onWebAreaLayoutChanged(int layout);
 
 private:
     // Ui::MainWindow *ui;
@@ -42,10 +44,10 @@ private:
     // FramelessWindow<MainWindow> *window;
     TabBar *tabBar;
     NavigationBar *navigationBar;
-    QStackedWidget *stackedWebArea;
-    WebEngineView *defaultWebEngineView;
-    WebEngineView *currentWebEngineView = nullptr; // or make it a QPointer
+    // QStackedWidget *stackedWebArea;
+    WebAreaLayoutWidget *webAreaLayout;
+    // WebEngineView *currentWebEngineView = nullptr; // or make it a QPointer
 
-    QVector<WebEngineView*> webEngineViewVector;
+    // QVector<WebEngineView*> webEngineViewVector;
 };
 #endif // MAINWINDOW_H

@@ -32,14 +32,15 @@ MainWindow (QMainWindow)
     tabBar = new TabBar(centralWidget);
     // tabBar = new FramelessWindow<TabBar>(false, centralWidget);
     navigationBar = new NavigationBar(centralWidget);
-    stackedWebArea = new QStackedWidget(centralWidget);
+    // stackedWebArea = new QStackedWidget(centralWidget);
+    webAreaLayout = new WebAreaLayoutWidget(centralWidget);
 
     centralLayout->setContentsMargins(0,0,0,0);
     centralLayout->setSpacing(0);
 
     centralLayout->addWidget(tabBar);
     centralLayout->addWidget(navigationBar);
-    centralLayout->addWidget(stackedWebArea);
+    centralLayout->addWidget(webAreaLayout);
 
     connect(tabBar, &TabBar::newTabAdded, this, &MainWindow::onNewTabAdded);
     connect(tabBar, &TabBar::tabClosed, this, &MainWindow::onTabClosed);
@@ -47,19 +48,30 @@ MainWindow (QMainWindow)
 
     connect(navigationBar, &NavigationBar::searchRequested, this, &MainWindow::onSearchRequested);
     connect(navigationBar, &NavigationBar::pageBack, this, [this](){
-        if(currentWebEngineView!=nullptr){
-            currentWebEngineView->back();
-        }
+        // if(currentWebEngineView!=nullptr){
+        //     currentWebEngineView->back();
+        // }
     });
     connect(navigationBar, &NavigationBar::pageForward, this, [this](){
-        if(currentWebEngineView!=nullptr){
-            currentWebEngineView->forward();
-        }
+        webAreaLayout->goForward();
     });
     connect(navigationBar, &NavigationBar::pageReload, this, [this](){
-        if(currentWebEngineView!=nullptr){
-            currentWebEngineView->reload();
-        }
+        webAreaLayout->goBack();
+    });
+    connect(navigationBar, &NavigationBar::layoutChanged, this, &MainWindow::onWebAreaLayoutChanged);
+
+    connect(webAreaLayout, &WebAreaLayoutWidget::webViewUrlChanged, navigationBar, &NavigationBar::setSearchbarText);
+    connect(webAreaLayout, &WebAreaLayoutWidget::webViewTitleChanged, this, [=](int index, const QString &new_title){
+        tabBar->setTabTitle(index, new_title);
+    });
+    connect(webAreaLayout, &WebAreaLayoutWidget::webViewFaviconChanged, this, [=](int index, const QIcon &favicon){
+        tabBar->setTabFavicon(index, favicon.pixmap(12,12));
+    });
+    connect(webAreaLayout, &WebAreaLayoutWidget::backButtonState, this, [=](bool enabled){
+        navigationBar->setBackButtonState(enabled);
+    });
+    connect(webAreaLayout, &WebAreaLayoutWidget::forwardButtonState, this, [=](bool enabled){
+        navigationBar->setForwardButtonState(enabled);
     });
 
     this->setCentralWidget(centralWidget);
@@ -81,41 +93,57 @@ MainWindow::~MainWindow()
 
 void MainWindow::onSearchRequested(const QUrl &url){
     qDebug() << url ;
-    currentWebEngineView->loadUrl(url);
+    webAreaLayout->loadUrl(url);
 }
 
 void MainWindow::onNewTabAdded(int tabIndex){
-    WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
-    stackedWebArea->addWidget(newWebWidget);
-    stackedWebArea->setCurrentWidget(newWebWidget);
+    webAreaLayout->addNewWebView(tabIndex);
+    // connect(webAreaLayout, &WebAreaLayoutWidget::webViewUrlChanged, navigationBar, &NavigationBar::setSearchbarText);
+    // connect(webAreaLayout, &WebAreaLayoutWidget::webViewTitleChanged, this, [=](const QString &new_title){
+    //     tabBar->setTabTitle(tabIndex, new_title);
+    // });
+    // connect(webAreaLayout, &WebAreaLayoutWidget::webViewFaviconChanged, this, [=](const QIcon &favicon){
+    //     tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
+    // });
+    // connect(webAreaLayout, &WebAreaLayoutWidget::backButtonState, this, [=](bool enabled){
+    //     navigationBar->setBackButtonState(enabled);
+    // });
+    // connect(webAreaLayout, &WebAreaLayoutWidget::forwardButtonState, this, [=](bool enabled){
+    //     navigationBar->setForwardButtonState(enabled);
+    // });
+    // WebEngineView *newWebWidget = new WebEngineView(stackedWebArea);
+    // stackedWebArea->addWidget(newWebWidget);
+    // stackedWebArea->setCurrentWidget(newWebWidget);
 
-    webEngineViewVector.insert(tabIndex, newWebWidget);
+    // webEngineViewVector.insert(tabIndex, newWebWidget);
 
-    connect(newWebWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    connect(newWebWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
-        tabBar->setTabTitle(tabIndex, new_title);
-    });
-    connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
-        tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
-    });
-    connect(newWebWidget, &WebEngineView::backButtonState, this, [=](bool state){
-        if(newWebWidget == currentWebEngineView){
-            navigationBar->setBackButtonState(state);
-        }
-    });
-    connect(newWebWidget, &WebEngineView::forwardButtonState, this, [=](bool state){
-        if(newWebWidget == currentWebEngineView){
-            navigationBar->setForwardButtonState(state);
-        }
-    });
+    // connect(newWebWidget, &WebEngineView::urlChanged, navigationBar, &NavigationBar::setSearchbarText);
+    // connect(newWebWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
+    //     tabBar->setTabTitle(tabIndex, new_title);
+    // });
+    // connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
+    //     tabBar->setTabFavicon(tabIndex, favicon.pixmap(12,12));
+    // });
+    // connect(newWebWidget, &WebEngineView::backButtonState, this, [=](bool state){
+    //     if(newWebWidget == currentWebEngineView){
+    //         navigationBar->setBackButtonState(state);
+    //     }
+    // });
+    // connect(newWebWidget, &WebEngineView::forwardButtonState, this, [=](bool state){
+    //     if(newWebWidget == currentWebEngineView){
+    //         navigationBar->setForwardButtonState(state);
+    //     }
+    // });
 }
 
 void MainWindow::onTabSelected(int tabIndex){
+    qDebug() << "s "<< tabIndex;
     if(tabIndex >= 0){
-        WebEngineView *view = webEngineViewVector.at(tabIndex);
-        stackedWebArea->setCurrentWidget(view);
-        currentWebEngineView = view;
-        navigationBar->setSearchbarText(view->getUrl().toDisplayString());
+        // WebEngineView *view = webEngineViewVector.at(tabIndex);
+        // stackedWebArea->setCurrentWidget(view);
+        // currentWebEngineView = view;
+        webAreaLayout->setCurrentWebView(tabIndex);
+        navigationBar->setSearchbarText(webAreaLayout->currentUrl().toDisplayString());
         tabBar->setCurrentTab(tabIndex);
     }else{
         qDebug() << "select tab : tab out of index!";
@@ -123,21 +151,39 @@ void MainWindow::onTabSelected(int tabIndex){
 }
 
 void MainWindow::onTabClosed(int tabIndex){
-    qDebug() << tabIndex;
+    // qDebug() << tabIndex;
+    qDebug() << "c "<< tabIndex;
     if(tabIndex >= 0){
-        WebEngineView *view = webEngineViewVector.takeAt(tabIndex);
-        stackedWebArea->removeWidget(view);
-        view->deleteLater();
+        // WebEngineView *view = webEngineViewVector.takeAt(tabIndex);
+        // stackedWebArea->removeWidget(view);
+        // view->deleteLater();
+        webAreaLayout->closeWebView(tabIndex);
         onTabSelected(tabIndex-1);
-        if(webEngineViewVector.size() == 0){
+        if(webAreaLayout->webviewVectorSize() == 0){
             tabBar->addNewTab();
             // TODO : CLOSE APPLICATION INSTEAD
             qDebug() << "new tab added when none left";
         }
+        onTabSelected((tabIndex-1)>=0?(tabIndex-1):0);
+
+
     }else{
         qDebug() << "Delete tab: tab out of index!";
     }
 }
 
-// TODO : Enable Scrolling of tabs when overflowed
-   // Tab options on right click
+
+void MainWindow::onWebAreaLayoutChanged(int layout){
+    // 0 = single view, 1 = split view, 2 = grid view, 3 = popup view
+    LayoutMode mode = static_cast<LayoutMode>(layout);
+    webAreaLayout->setLayoutMode(mode);
+    // if((layout == 1) && (webEngineViewVector.size() < 2)){
+    //     qDebug() << "Split view requires two or more tabs to be opened!";
+    //     // TODO : Instead open a default startup page
+    // }
+    // webEngineViewVector
+}
+
+
+// TODO : remove .ui file listing from CMake
+    // Custom theming
