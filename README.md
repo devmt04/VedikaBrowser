@@ -14,6 +14,10 @@ Built using the Qt framework for the GUI and Qt WebEngine for rendering web cont
 
 Contributions are welcome! If you have suggestions, bug reports, or improvements, feel free to open an issue or submit a pull request.
 
+## Known Issues
+
+See [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) for current limitations and bugs.
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0.  

@@ -3,15 +3,16 @@
 
 
 #include "webarealayoutmanager.h"
-
+#include <QtGlobal>
 // #include "ui_webarealayoutmanager.h"
-int count = 0;
-WebAreaLayoutManager::WebAreaLayoutManager(QWidget *parent)
-    : QWidget(parent)
+
+WebAreaLayoutManager::WebAreaLayoutManager(QWidget *parent, const  QVector<QPointer<WebEngineView>> &_globalViewVector)
+    : QWidget(parent),
+    globalViewVector(_globalViewVector)
     /*, ui(new Ui::WebAreaLayoutManager)*/
 {
     // ui->setupUi(this);
-    this->setLayout(new QHBoxLayout(this));
+    horizontalLayout = new QHBoxLayout(this);
     layout()->setContentsMargins(0, 0, 0, 0);
     layout()->setSpacing(0);
 }
@@ -22,37 +23,53 @@ WebAreaLayoutManager::~WebAreaLayoutManager()
 }
 
 void WebAreaLayoutManager::deleteWebView(WebEngineView *view){
-    qDebug() << "2" << view;
-    int index = currentActiveViews.indexOf(view);
-    if(index != -1){ // iff Single // Optimized it
-        qDebug() << "index " << index;
-        currentActiveViews.takeAt(index);
-    }
+    currentActiveViews.removeOne(view);
 }
 
 void WebAreaLayoutManager::addWebView(WebEngineView *view){
-    currentSelectedView = view;
-    switch(currentActiveLayout){
-    case 0:
-        QVector<WebEngineView*> views = { view };
-        applyLayout(0, views);
-    };
+
 }
 
-void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*>& views) {
+void WebAreaLayoutManager::applyLayout(int mode) {
+    applyLayout(mode, globalViewVector);
+}
+
+void WebAreaLayoutManager::applyLayout(int mode, const QVector<QPointer<WebEngineView>> &views) {
     // clearLayout();
     currentActiveLayout = mode;
     switch(mode){
     case 0:
-        // here
         currentActiveViews = views;
         setupSingle(currentActiveViews); // or just pass a WebEngineView* not a vector?
         break;
     case 1:
-        // setupSplit(views);
+        // Filter views here
+        if(views.size() < 2){
+            currentActiveViews = views;
+            // fallback to Single View
+            setupSingle(currentActiveViews);
+            emit message("Split view requires at least 2 tabs!");
+            break;
+        }else if(views.size() <= 4){
+            currentActiveViews = views;
+            setupSplit(currentActiveViews);
+            break;
+        }else{
+            // Prompt user to choose : either based on recently visited or selection
+            // Show a selection Dialog window
+            TabSelectionDialog *tabSelectionDialog = new TabSelectionDialog(this, views);
+            if (tabSelectionDialog->exec() == QDialog::Accepted) {
+                currentActiveViews = tabSelectionDialog->getSelectedViews();
+                tabSelectionDialog->deleteLater();
+                setupSplit(currentActiveViews);
+            }else{
+                emit message("Split View can not be applied!");
+            }
+            break;
+        }
         break;
     case 2:
-        // setupGrid(views);
+        setupGrid(views);
         break;
     default:
         qDebug() << "Unsupported layout mode!";
@@ -61,16 +78,12 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*>& 
 
 
 void WebAreaLayoutManager::clearLayout(bool free) {
-    qDebug() << "called";
-    qDebug() << "layout count " << layout()->count();
     QLayout *l = layout();
     while(QLayoutItem *item = l->takeAt(0)){
-        qDebug() << "removed";
         QWidget *w = item->widget();
         if(w){
-            // w->setParent(nullptr); // will freed OpenGL resources do this for tabs not active for long time
             if(free) // TODO :Optimized it
-                w->setParent(nullptr);
+                w->setParent(nullptr); // will freed OpenGL resources do this for tabs not active for long time
             else
                 w->hide();
             l->removeWidget(w);
@@ -79,32 +92,48 @@ void WebAreaLayoutManager::clearLayout(bool free) {
     }
 }
 
-void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*>& views){
-    if(!views.isEmpty()){
-        clearLayout(false); // we don't gonna free OpenGL resourcces, but just hide it
-        layout()->addWidget(views.at(0));
-        WebEngineView *view = views.at(0);
+void WebAreaLayoutManager::setupSingle(const QVector<QPointer<WebEngineView>> &views){
+    if(layout() != horizontalLayout)
+        this->setLayout(horizontalLayout);
+    clearLayout(); // we don't gonna free OpenGL resourcces, but just hide it
+    layout()->addWidget(views.at(0));
+    WebEngineView *view = views.at(0);
+    if (view->parent() != nullptr)
+        view->show();
+    else
+        view->setParent(this);
+}
+
+void WebAreaLayoutManager::setupSplit(const QVector<QPointer<WebEngineView>>& views){
+    clearLayout();
+    if(layout() != horizontalLayout)
+        this->setLayout(horizontalLayout);
+    if (splitterLayout)
+        splitterLayout->deleteLater();
+    splitterLayout = new QSplitter(Qt::Horizontal, this);
+    splitterLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    for(WebEngineView *view : views){
         if (view->parent() != nullptr)
             view->show();
         else
             view->setParent(this);
-    }else{
-        qDebug() << "Empty";
+        splitterLayout->addWidget(view);
     }
-}
+    horizontalLayout->addWidget(splitterLayout);
 
-void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
-    if(!views.isEmpty()){
-        clearLayout(false);
-        if(views.size() < 4){
-            for(WebEngineView *v : views){
-                layout()->addWidget(v);
-            }
+    // Equalize width
+    if (splitterLayout->count() > 1) {
+        QList<int> sizes;
+        int width = splitterLayout->width() / splitterLayout->count();
+        for (int i = 0; i < splitterLayout->count(); ++i) {
+            sizes << width;
         }
+        splitterLayout->setSizes(sizes);
     }
 }
 
-void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
+void WebAreaLayoutManager::setupGrid(const QVector<QPointer<WebEngineView>>& views){
 
 }
 
@@ -112,8 +141,27 @@ void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
 void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
     if(view != currentSelectedView){
         currentSelectedView = view;
-        QVector<WebEngineView*> views = { view };
-        // view->setParent(this);
-        applyLayout(currentActiveLayout, views); //iff Single
+        switch(currentActiveLayout){
+        case 0:
+            applyLayout(0, QVector<QPointer<WebEngineView>>( { view })); //iff Single
+            break;
+        case 1:
+             // If selected tab is already there, then ignore.
+            if(currentActiveViews.indexOf(view) == -1){
+                if(currentActiveViews.size()<4){
+                    // If selected tab is not there + max capacity of Split view not fullfilled, then append
+                    currentActiveViews.append(view);
+                }
+                else{
+                    // If selected tab is not there + also max capacity of Split view is already fullfilled, then use intelligence or custom saved setting to append
+                    currentActiveViews.takeAt(0);
+                    currentActiveViews.append(view);
+                    // as of now, replace it with first view
+                    // TODO : Manupulate Current Active view
+                }
+                applyLayout(1, currentActiveViews);
+                break;
+            } // TODO : Optimized this block
+        };
     }
 }

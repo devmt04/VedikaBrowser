@@ -7,10 +7,15 @@
 #include <QWidget>
 #include <QVector>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QSplitter>
 #include <QGridLayout>
+#include <QSizePolicy>
 #include <QDebug>
+#include <QDialog>
+#include <QPointer>
+
 #include "../WebEngineView/webengineview.h"
+#include "./TabSelectionDialog/tabselectiondialog.h"
 
 // namespace Ui {
 // class WebAreaLayoutManager;
@@ -21,7 +26,8 @@ class WebAreaLayoutManager : public QWidget
     Q_OBJECT
 
 public:
-    explicit WebAreaLayoutManager(QWidget *parent = nullptr);
+    // explicit WebAreaLayoutManager(QWidget *parent = nullptr/*, QVector<WebEngineView*> *_globalViewVector = nullptr*/);
+    explicit WebAreaLayoutManager(QWidget *parent, const QVector<QPointer<WebEngineView>> &_globalViewVector);
     ~WebAreaLayoutManager();
     enum LayoutMode {
         Single = 0,
@@ -30,20 +36,31 @@ public:
         // Popup can be handled externally (e.g. floating windows)
     };
 
-    void applyLayout(int mode, const QVector<WebEngineView*>& views); // or use enum instead of int
+    void applyLayout(int mode);
+    void applyLayout(int mode, const QVector<QPointer<WebEngineView>>& views);
     void setCurrentWebArea(WebEngineView *view);
     void deleteWebView(WebEngineView *view);
     void addWebView(WebEngineView *view);
 
+signals:
+    void message(const QString &text); // messages will be displayed at NavigationBar
+
 private:
     // Ui::WebAreaLayoutManager *ui;
     int currentActiveLayout = 0; // So the defualt startup tab will ve opened in SignleView
-    QVector<WebEngineView*> currentActiveViews;
+    const QVector<QPointer<WebEngineView>> &globalViewVector;
+    QVector<QPointer<WebEngineView>> currentActiveViews;
     WebEngineView *currentSelectedView;
+
+    QHBoxLayout *horizontalLayout = nullptr;
+    QSplitter *splitterLayout = nullptr; // later
+    QGridLayout *gridLayout = nullptr;
+
+    TabSelectionDialog *tabSelectionDialog;
     void clearLayout(bool free = false); // Remove all children safely
-    void setupSingle(const QVector<WebEngineView*>& views);
-    void setupSplit(const QVector<WebEngineView*>& views);
-    void setupGrid(const QVector<WebEngineView*>& views);
+    void setupSingle(const QVector<QPointer<WebEngineView>> &views);
+    void setupSplit(const QVector<QPointer<WebEngineView>> &views);
+    void setupGrid(const QVector<QPointer<WebEngineView>> &views);
     // popup
 
 };

@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QtWebEngineWidgets/QWebEngineView>
 #include <QWebEngineHistory>
+#include <QDebug>
 
 namespace Ui {
 class WebEngineView;
@@ -23,6 +24,8 @@ public:
     ~WebEngineView();
     void loadUrl(const QUrl &url);
     QUrl getUrl() const;
+    QString getTitle() const;
+    // getfavivon
     void back();
     void forward();
     void reload();

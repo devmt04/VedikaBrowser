@@ -12,13 +12,17 @@ WebAreaLayoutWidget::WebAreaLayoutWidget(QWidget *parent)
     // ui->setupUi(this);
     horizontalLayout = new QHBoxLayout(this);
     // stackedWebArea = new QStackedWidget(this);
-    layoutManager = new WebAreaLayoutManager(this);
+    layoutManager = new WebAreaLayoutManager(this, globalWebViewVector);
     horizontalLayout->addWidget(layoutManager);
 
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
     horizontalLayout->setSpacing(0);
 
     this->setLayout(horizontalLayout);
+
+    connect(layoutManager, &WebAreaLayoutManager::message, this, [this](const QString &text){
+        emit message(text);
+    });
 }
 
 WebAreaLayoutWidget::~WebAreaLayoutWidget()
@@ -27,26 +31,24 @@ WebAreaLayoutWidget::~WebAreaLayoutWidget()
 }
 
 int WebAreaLayoutWidget::webviewVectorSize() const{
-    return webEngineViewVector.size();
+    return globalWebViewVector.size();
 }
 
 void WebAreaLayoutWidget::addNewWebView(int index){
     WebEngineView *newWebWidget = new WebEngineView(layoutManager);
 
     layoutManager->addWebView(newWebWidget);
+    layoutManager->setCurrentWebArea(newWebWidget);
 
-    // stackedWebArea->addWidget(newWebWidget);
-    // stackedWebArea->setCurrentWidget(newWebWidget);
-
-    webEngineViewVector.insert(index, newWebWidget);
+    globalWebViewVector.insert(index, newWebWidget);
     connect(newWebWidget, &WebEngineView::urlChanged, this, [this](const QUrl &url){
         emit webViewUrlChanged(url.toDisplayString());
     });
     connect(newWebWidget, &WebEngineView::titleChanged, this, [=](const QString &new_title){
-        emit webViewTitleChanged(webEngineViewVector.indexOf(newWebWidget), new_title);
+        emit webViewTitleChanged(globalWebViewVector.indexOf(newWebWidget), new_title);
     });
     connect(newWebWidget, &WebEngineView::faviconChanged, this, [=](const QIcon &favicon){
-        emit webViewFaviconChanged(webEngineViewVector.indexOf(newWebWidget), favicon);
+        emit webViewFaviconChanged(globalWebViewVector.indexOf(newWebWidget), favicon);
     });
     connect(newWebWidget, &WebEngineView::backButtonState, this, [=](bool enabled){
         if(newWebWidget == currentWebEngineView)
@@ -59,17 +61,14 @@ void WebAreaLayoutWidget::addNewWebView(int index){
 }
 
 void WebAreaLayoutWidget::closeWebView(int index){
-    qDebug() << "1 "<< index;
-    WebEngineView *view = webEngineViewVector.takeAt(index);
+    WebEngineView *view = globalWebViewVector.takeAt(index);
     layoutManager->deleteWebView(view);
-    // stackedWebArea->removeWidget(view);
     view->deleteLater();
 }
 
 void WebAreaLayoutWidget::setCurrentWebView(int index){
-    WebEngineView *view = webEngineViewVector.at(index);
+    WebEngineView *view = globalWebViewVector.at(index);
     layoutManager->setCurrentWebArea(view);
-    // stackedWebArea->setCurrentWidget(view);
     currentWebEngineView = view;
 }
 
@@ -89,7 +88,6 @@ void WebAreaLayoutWidget::goForward(){
     }
 }
 
-
 QUrl WebAreaLayoutWidget::currentUrl() const{
     return currentWebEngineView->getUrl();
 }
@@ -98,21 +96,20 @@ void WebAreaLayoutWidget::setLayoutMode(int mode){
     switch (mode) {
     case 0:
         qDebug() << "Sngle";
-        layoutManager->applyLayout(mode, webEngineViewVector);
+        layoutManager->applyLayout(mode, QVector<QPointer<WebEngineView>>({currentWebEngineView}));
         break;
     case 1:
         qDebug() << "Split";
-        layoutManager->applyLayout(mode, webEngineViewVector);
+        layoutManager->applyLayout(mode);
         break;
     case 2:
         qDebug() << "Grid";
-        layoutManager->applyLayout(mode, webEngineViewVector);
+        layoutManager->applyLayout(mode);
         break;
     case 3:
         qDebug() << "Popup";
-        layoutManager->applyLayout(mode, webEngineViewVector);
+        layoutManager->applyLayout(mode);
         break;
     } // TODO Unify them if using int
-
     // TODO : Track recently visited tabs in order to send them to layoutManager
 }

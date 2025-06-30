@@ -9,7 +9,7 @@
 #include <QStackedWidget>
 #include <QVector>
 #include <QHBoxLayout>
-
+#include <QPointer>
 #include "./WebEngineView/webengineview.h"
 #include "./WebAreaLayoutManager/webarealayoutmanager.h"
 
@@ -40,6 +40,7 @@ signals:
     void webViewFaviconChanged(int index, const QIcon &favicon);
     void backButtonState(bool enabled);
     void forwardButtonState(bool enabled);
+    void message(const QString &text);
 
 private:
     // Ui::WebAreaLayoutWidget *ui;
@@ -47,7 +48,8 @@ private:
     // QStackedWidget *stackedWebArea;
     WebAreaLayoutManager *layoutManager;
     WebEngineView *currentWebEngineView = nullptr;
-    QVector<WebEngineView*> webEngineViewVector;
+    // QVector<WebEngineView*> globalWebViewVector;
+    QVector<QPointer<WebEngineView>> globalWebViewVector;
 };
 
 #endif // WEBAREALAYOUTWIDGET_H

@@ -71,6 +71,9 @@ MainWindow (QMainWindow)
         navigationBar->setForwardButtonState(enabled);
     });
 
+    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [=](const QString &text){
+        navigationBar->setSearchbarText(text);
+    });
     this->setCentralWidget(centralWidget);
     this->showMaximized();
 
@@ -110,15 +113,12 @@ void MainWindow::onTabSelected(int tabIndex){
 void MainWindow::onTabClosed(int tabIndex){
     if(tabIndex >= 0){
         webAreaLayout->closeWebView(tabIndex);
-        onTabSelected(tabIndex-1);
         if(webAreaLayout->webviewVectorSize() == 0){
             tabBar->addNewTab();
             // TODO : CLOSE APPLICATION INSTEAD
             qDebug() << "new tab added when none left";
         }
         onTabSelected((tabIndex-1)>=0?(tabIndex-1):0);
-
-
     }else{
         qDebug() << "Delete tab: tab out of index!";
     }

@@ -45,6 +45,11 @@ QUrl WebEngineView::getUrl() const {
     return webEngineView->url();
 }
 
+QString WebEngineView::getTitle() const{
+    // qDebug() << "he";
+    return webEngineView->title();
+    // return "hehe";
+}
 
 void WebEngineView::back(){
     if (webEngineView->history()->canGoBack()) {
