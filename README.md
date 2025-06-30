@@ -8,7 +8,9 @@ Built using the Qt framework for the GUI and Qt WebEngine for rendering web cont
 
 ![Home Screen](lib/resources/screenshots/1.png)
 
-![Web View](lib/resources/screenshots/2.png)
+![Split View](lib/resources/screenshots/2.png)
+
+![Split View](lib/resources/screenshots/3.png)
 
 ## Contributing
 

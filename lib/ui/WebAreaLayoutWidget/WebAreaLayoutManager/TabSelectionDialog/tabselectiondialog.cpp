@@ -24,7 +24,7 @@ TabSelectionDialog::TabSelectionDialog(QWidget *parent, const QVector<QPointer<W
         // Q_ASSERT(view);
         qDebug() << i  << view << view->parent();
 
-        QCheckBox *check = new QCheckBox(view->getTitle(, gridContainer);
+        QCheckBox *check = new QCheckBox(view->getTitle(), gridContainer);
 
         gridLayout->addWidget(check, i / 3, i % 3);
         i++;
