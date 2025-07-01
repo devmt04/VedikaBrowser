@@ -48,6 +48,10 @@ SearchBar::~SearchBar()
     delete ui;
 }
 
+QString SearchBar::getInputBarText() const{
+    return urlInputBar->text();
+}
+
 void SearchBar::setInputBarText(const QString &text){
     if (QString::compare(text, "qrc:/lib/resources/webpages/startup_light.html", Qt::CaseSensitive) != 0) {
         urlInputBar->setText(text);

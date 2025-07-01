@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QSizePolicy>
+#include <QTimer>
 
 #include "./searchbar/searchbar.h"
 #include "./NavigationButtonGroup/navigationbuttongroup.h"
@@ -25,8 +26,9 @@ class NavigationBar : public QWidget
 
 public:
     explicit NavigationBar(QWidget *parent = nullptr);
-    void setSearchbarText(const QString &text);
     ~NavigationBar();
+    void setSearchbarText(const QString &text);
+    void setMessage(const QString &text);
     void setBackButtonState(bool active);
     void setForwardButtonState(bool active);
 

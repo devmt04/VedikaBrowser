@@ -16,8 +16,9 @@ MainWindow (QMainWindow)
     └── QVBoxLayout (centralLayout)
         ├── tabBar (TabBar)
         ├── navigationBar (NavigationBar)
-        └── stackedWebArea (QStackedWidget)
-            └── multiple WebEngineView *
+        └── webAreaLayout (WebAreaLayoutWidget)
+            └── WebAreaLayoutManager
+                 └── multiple WebEngineView
 */
 
     // this->setWindowFlags(Qt::Popup);
@@ -58,21 +59,21 @@ MainWindow (QMainWindow)
     connect(navigationBar, &NavigationBar::layoutChanged, this, &MainWindow::onWebAreaLayoutChanged);
 
     connect(webAreaLayout, &WebAreaLayoutWidget::webViewUrlChanged, navigationBar, &NavigationBar::setSearchbarText);
-    connect(webAreaLayout, &WebAreaLayoutWidget::webViewTitleChanged, this, [=](int index, const QString &new_title){
+    connect(webAreaLayout, &WebAreaLayoutWidget::webViewTitleChanged, this, [this](int index, const QString &new_title){
         tabBar->setTabTitle(index, new_title);
     });
-    connect(webAreaLayout, &WebAreaLayoutWidget::webViewFaviconChanged, this, [=](int index, const QIcon &favicon){
+    connect(webAreaLayout, &WebAreaLayoutWidget::webViewFaviconChanged, this, [this](int index, const QIcon &favicon){
         tabBar->setTabFavicon(index, favicon.pixmap(12,12));
     });
-    connect(webAreaLayout, &WebAreaLayoutWidget::backButtonState, this, [=](bool enabled){
+    connect(webAreaLayout, &WebAreaLayoutWidget::backButtonState, this, [this](bool enabled){
         navigationBar->setBackButtonState(enabled);
     });
-    connect(webAreaLayout, &WebAreaLayoutWidget::forwardButtonState, this, [=](bool enabled){
+    connect(webAreaLayout, &WebAreaLayoutWidget::forwardButtonState, this, [this](bool enabled){
         navigationBar->setForwardButtonState(enabled);
     });
 
-    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [=](const QString &text){
-        navigationBar->setSearchbarText(text);
+    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [this](const QString &text){
+        navigationBar->setMessage(text);
     });
     this->setCentralWidget(centralWidget);
     this->showMaximized();

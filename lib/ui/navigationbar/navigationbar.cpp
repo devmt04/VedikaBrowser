@@ -92,5 +92,20 @@ void NavigationBar::setSearchbarText(const QString &text){
     searchBar->setInputBarText(text);
 }
 
+void NavigationBar::setMessage(const QString &text){
+    const QString &originalText = searchBar->getInputBarText();
+    searchBar->setInputBarText(text);
+
+    QTimer *timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, &QTimer::timeout, this, [this, originalText, timer](){
+        qDebug() << "timeout" ;
+        searchBar->setInputBarText(originalText);
+        timer->deleteLater();
+    });
+    timer->start(3500);
+    // TODO : Animation
+}
+
 
 // TODO : use a mediator class for slot-signal connections ?
