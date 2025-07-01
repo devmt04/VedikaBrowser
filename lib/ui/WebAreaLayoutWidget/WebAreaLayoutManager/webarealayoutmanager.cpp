@@ -45,9 +45,9 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
     case 1:
         // Filter views here
         if(views.size() < 2){
-            currentActiveViews = views;
-            // fallback to Single View
-            setupSingle(currentActiveViews);
+            // currentActiveViews = views;
+            // // fallback to Single View
+            // setupSingle(currentActiveViews);
             emit message("Split view requires at least 2 tabs!");
             break;
         }else if(views.size() <= 4){
@@ -69,7 +69,26 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
         }
         break;
     case 2:
-        setupGrid(views);
+        // As of now, it suppoorts only 4 tabs at max
+        // Need atleast 4 views
+        if(views.size() < 4){
+            emit message("Grid view requires at least 4 tabs!");
+            break;
+        }else if(views.size() <= 4){
+            currentActiveViews = views;
+            setupGrid(currentActiveViews);
+            break;
+        }else{
+            TabSelectionDialog *tabSelectionDialog = new TabSelectionDialog(this, views);
+            if (tabSelectionDialog->exec() == QDialog::Accepted) {
+                currentActiveViews = tabSelectionDialog->getSelectedViews();
+                tabSelectionDialog->deleteLater();
+                setupGrid(currentActiveViews);
+            }else{
+                emit message("Grid View can not be applied!");
+            }
+            break;
+        }
         break;
     default:
         qDebug() << "Unsupported layout mode!";
@@ -93,8 +112,8 @@ void WebAreaLayoutManager::clearLayout(bool free) {
 }
 
 void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*> &views){
-    if(layout() != horizontalLayout)
-        this->setLayout(horizontalLayout);
+    // if(layout() != horizontalLayout)
+    //     this->setLayout(horizontalLayout);
     clearLayout(); // we don't gonna free OpenGL resourcces, but just hide the widget
     layout()->addWidget(views.at(0));
     WebEngineView *view = views.at(0);
@@ -106,9 +125,8 @@ void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*> &views){
 
 void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
     clearLayout();
-    if(layout() != horizontalLayout)
-        this->setLayout(horizontalLayout);
-
+    // if(layout() != horizontalLayout)
+    //     this->setLayout(horizontalLayout);
     if (splitterLayout){
         for(WebEngineView *view : splitterLayout->findChildren<WebEngineView*>()){
             view->setParent(this); // reparent views to their original parent
@@ -140,7 +158,36 @@ void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
 }
 
 void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
+    clearLayout();
+    // if(layout() != horizontalLayout)
+    //     this->setLayout(horizontalLayout);
+    if(gridContainer){
+        for(WebEngineView *view : gridLayout->findChildren<WebEngineView*>()){
+            view->setParent(this);
+        }
+        gridContainer->deleteLater();
+    }
 
+    gridContainer = new QWidget(this);
+    gridLayout = new QGridLayout(gridContainer);
+
+    gridContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    gridLayout->setContentsMargins(0,0,0,0);
+    gridLayout->setSpacing(1);
+
+    {
+        int i = 0;
+        for(WebEngineView *view : views){
+            gridLayout->addWidget(view, i / 2, i % 2);
+            if (view->parent() != nullptr)
+                view->show();
+            else
+                view->setParent(this); // ?
+            i++;
+        }
+    }
+    gridContainer->setLayout(gridLayout);
+    horizontalLayout->addWidget(gridContainer);
 }
 
 
@@ -168,6 +215,22 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
                 applyLayout(1, currentActiveViews);
                 break;
             } // TODO : Optimized this block
+            break;
+        case 2:
+            // TODO : More work here
+            if(currentActiveViews.indexOf(view) == -1){
+                if(currentActiveViews.size()<4){
+                    currentActiveViews.append(view);
+                }
+                else{
+                    currentActiveViews.takeAt(0);
+                    currentActiveViews.append(view);
+                    // TODO : merge logic for case 1 and 2
+                }
+                applyLayout(2, currentActiveViews);
+                break;
+            }
+            break;
         };
     }
 }

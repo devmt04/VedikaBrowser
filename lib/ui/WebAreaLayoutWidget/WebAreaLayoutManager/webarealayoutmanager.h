@@ -52,8 +52,9 @@ private:
     WebEngineView *currentSelectedView;
 
     QHBoxLayout *horizontalLayout = nullptr;
-    QSplitter *splitterLayout = nullptr; // later
+    QSplitter *splitterLayout = nullptr;
     QGridLayout *gridLayout = nullptr;
+    QWidget *gridContainer = nullptr;
 
     TabSelectionDialog *tabSelectionDialog;
     void clearLayout(bool free = false); // Remove all children safely
