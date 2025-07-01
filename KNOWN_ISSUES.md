@@ -41,4 +41,4 @@ QCheckBox *check = new QCheckBox(view->getTitle(), gridContainer);
 
 ### Status
 
-Open – Under investigation.
+Solved!

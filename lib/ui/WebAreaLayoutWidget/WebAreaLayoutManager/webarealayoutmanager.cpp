@@ -6,7 +6,7 @@
 #include <QtGlobal>
 // #include "ui_webarealayoutmanager.h"
 
-WebAreaLayoutManager::WebAreaLayoutManager(QWidget *parent, const  QVector<QPointer<WebEngineView>> &_globalViewVector)
+WebAreaLayoutManager::WebAreaLayoutManager(QWidget *parent, const QVector<WebEngineView*> &_globalViewVector)
     : QWidget(parent),
     globalViewVector(_globalViewVector)
     /*, ui(new Ui::WebAreaLayoutManager)*/
@@ -27,14 +27,14 @@ void WebAreaLayoutManager::deleteWebView(WebEngineView *view){
 }
 
 void WebAreaLayoutManager::addWebView(WebEngineView *view){
-
+    //
 }
 
 void WebAreaLayoutManager::applyLayout(int mode) {
     applyLayout(mode, globalViewVector);
 }
 
-void WebAreaLayoutManager::applyLayout(int mode, const QVector<QPointer<WebEngineView>> &views) {
+void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &views) {
     // clearLayout();
     currentActiveLayout = mode;
     switch(mode){
@@ -82,7 +82,7 @@ void WebAreaLayoutManager::clearLayout(bool free) {
     while(QLayoutItem *item = l->takeAt(0)){
         QWidget *w = item->widget();
         if(w){
-            if(free) // TODO :Optimized it
+            if(free) // TODO :Optimization required
                 w->setParent(nullptr); // will freed OpenGL resources do this for tabs not active for long time
             else
                 w->hide();
@@ -92,33 +92,39 @@ void WebAreaLayoutManager::clearLayout(bool free) {
     }
 }
 
-void WebAreaLayoutManager::setupSingle(const QVector<QPointer<WebEngineView>> &views){
+void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*> &views){
     if(layout() != horizontalLayout)
         this->setLayout(horizontalLayout);
-    clearLayout(); // we don't gonna free OpenGL resourcces, but just hide it
+    clearLayout(); // we don't gonna free OpenGL resourcces, but just hide the widget
     layout()->addWidget(views.at(0));
     WebEngineView *view = views.at(0);
     if (view->parent() != nullptr)
         view->show();
     else
-        view->setParent(this);
+        view->setParent(this); // ?
 }
 
-void WebAreaLayoutManager::setupSplit(const QVector<QPointer<WebEngineView>>& views){
+void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
     clearLayout();
     if(layout() != horizontalLayout)
         this->setLayout(horizontalLayout);
-    if (splitterLayout)
+
+    if (splitterLayout){
+        for(WebEngineView *view : splitterLayout->findChildren<WebEngineView*>()){
+            view->setParent(this); // reparent views to their original parent
+        }
         splitterLayout->deleteLater();
+    }
+
     splitterLayout = new QSplitter(Qt::Horizontal, this);
     splitterLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     for(WebEngineView *view : views){
+        splitterLayout->addWidget(view); //  Add to splitter (temporarily changes parent)
         if (view->parent() != nullptr)
             view->show();
         else
-            view->setParent(this);
-        splitterLayout->addWidget(view);
+            view->setParent(this); // ?
     }
     horizontalLayout->addWidget(splitterLayout);
 
@@ -133,7 +139,7 @@ void WebAreaLayoutManager::setupSplit(const QVector<QPointer<WebEngineView>>& vi
     }
 }
 
-void WebAreaLayoutManager::setupGrid(const QVector<QPointer<WebEngineView>>& views){
+void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
 
 }
 
@@ -143,13 +149,13 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
         currentSelectedView = view;
         switch(currentActiveLayout){
         case 0:
-            applyLayout(0, QVector<QPointer<WebEngineView>>( { view })); //iff Single
+            applyLayout(0, QVector<WebEngineView*>( { view }));
             break;
         case 1:
              // If selected tab is already there, then ignore.
             if(currentActiveViews.indexOf(view) == -1){
                 if(currentActiveViews.size()<4){
-                    // If selected tab is not there + max capacity of Split view not fullfilled, then append
+                    // If selected tab is not there + max capacity of Split view NOT fullfilled, then append
                     currentActiveViews.append(view);
                 }
                 else{

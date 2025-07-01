@@ -12,7 +12,6 @@
 #include <QSizePolicy>
 #include <QDebug>
 #include <QDialog>
-#include <QPointer>
 
 #include "../WebEngineView/webengineview.h"
 #include "./TabSelectionDialog/tabselectiondialog.h"
@@ -27,7 +26,7 @@ class WebAreaLayoutManager : public QWidget
 
 public:
     // explicit WebAreaLayoutManager(QWidget *parent = nullptr/*, QVector<WebEngineView*> *_globalViewVector = nullptr*/);
-    explicit WebAreaLayoutManager(QWidget *parent, const QVector<QPointer<WebEngineView>> &_globalViewVector);
+    explicit WebAreaLayoutManager(QWidget *parent, const QVector<WebEngineView*> &_globalViewVector);
     ~WebAreaLayoutManager();
     enum LayoutMode {
         Single = 0,
@@ -37,7 +36,7 @@ public:
     };
 
     void applyLayout(int mode);
-    void applyLayout(int mode, const QVector<QPointer<WebEngineView>>& views);
+    void applyLayout(int mode, const QVector<WebEngineView*>& views);
     void setCurrentWebArea(WebEngineView *view);
     void deleteWebView(WebEngineView *view);
     void addWebView(WebEngineView *view);
@@ -48,8 +47,8 @@ signals:
 private:
     // Ui::WebAreaLayoutManager *ui;
     int currentActiveLayout = 0; // So the defualt startup tab will ve opened in SignleView
-    const QVector<QPointer<WebEngineView>> &globalViewVector;
-    QVector<QPointer<WebEngineView>> currentActiveViews;
+    const QVector<WebEngineView*> &globalViewVector;
+    QVector<WebEngineView*> currentActiveViews;
     WebEngineView *currentSelectedView;
 
     QHBoxLayout *horizontalLayout = nullptr;
@@ -58,9 +57,9 @@ private:
 
     TabSelectionDialog *tabSelectionDialog;
     void clearLayout(bool free = false); // Remove all children safely
-    void setupSingle(const QVector<QPointer<WebEngineView>> &views);
-    void setupSplit(const QVector<QPointer<WebEngineView>> &views);
-    void setupGrid(const QVector<QPointer<WebEngineView>> &views);
+    void setupSingle(const QVector<WebEngineView*> &views);
+    void setupSplit(const QVector<WebEngineView*> &views);
+    void setupGrid(const QVector<WebEngineView*> &views);
     // popup
 
 };

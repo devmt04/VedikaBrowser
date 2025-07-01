@@ -9,7 +9,6 @@
 #include <QStackedWidget>
 #include <QVector>
 #include <QHBoxLayout>
-#include <QPointer>
 #include "./WebEngineView/webengineview.h"
 #include "./WebAreaLayoutManager/webarealayoutmanager.h"
 
@@ -45,11 +44,9 @@ signals:
 private:
     // Ui::WebAreaLayoutWidget *ui;
     QHBoxLayout *horizontalLayout;
-    // QStackedWidget *stackedWebArea;
     WebAreaLayoutManager *layoutManager;
     WebEngineView *currentWebEngineView = nullptr;
-    // QVector<WebEngineView*> globalWebViewVector;
-    QVector<QPointer<WebEngineView>> globalWebViewVector;
+    QVector<WebEngineView*> globalWebViewVector;
 };
 
 #endif // WEBAREALAYOUTWIDGET_H

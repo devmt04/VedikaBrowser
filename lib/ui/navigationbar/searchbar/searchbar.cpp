@@ -78,6 +78,7 @@ bool SearchBar::eventFilter(QObject *watched, QEvent *event){
 
 
 QUrl SearchBar::processQuery(const QString &query){
+    // use QUrl::fromUserInput()
     QUrl encodedUrl;
     if(!query.isEmpty()){
         if(!isUrl(query)){

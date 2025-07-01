@@ -22,14 +22,14 @@ class TabSelectionDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TabSelectionDialog(QWidget *parent, const QVector<QPointer<WebEngineView>> &views);
+    explicit TabSelectionDialog(QWidget *parent, const QVector<WebEngineView*> &views);
     ~TabSelectionDialog();
-    QVector<QPointer<WebEngineView>> getSelectedViews();
+    QVector<WebEngineView*> getSelectedViews();
 
 private:
     // Ui::TabSelectionDialog *ui;
-    const QVector<QPointer<WebEngineView>> &globalViewVector;
-    QVector<QPointer<WebEngineView>> selectedViews;
+    const QVector<WebEngineView*> &globalViewVector;
+    QVector<WebEngineView*> selectedViews;
     QVBoxLayout *verticalLayout;
     QScrollArea *scrollArea;
     QGridLayout *gridLayout;

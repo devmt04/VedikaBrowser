@@ -11,7 +11,6 @@ WebAreaLayoutWidget::WebAreaLayoutWidget(QWidget *parent)
 {
     // ui->setupUi(this);
     horizontalLayout = new QHBoxLayout(this);
-    // stackedWebArea = new QStackedWidget(this);
     layoutManager = new WebAreaLayoutManager(this, globalWebViewVector);
     horizontalLayout->addWidget(layoutManager);
 
@@ -96,7 +95,7 @@ void WebAreaLayoutWidget::setLayoutMode(int mode){
     switch (mode) {
     case 0:
         qDebug() << "Sngle";
-        layoutManager->applyLayout(mode, QVector<QPointer<WebEngineView>>({currentWebEngineView}));
+        layoutManager->applyLayout(mode, QVector<WebEngineView*>({currentWebEngineView}));
         break;
     case 1:
         qDebug() << "Split";
