@@ -29,9 +29,9 @@ NavigationButtonGroup::NavigationButtonGroup(QWidget *parent)
     forwardButton->setProperty("class", "borderless");
     reloadButton->setProperty("class", "borderless");
 
-    backButton->setIcon(QIcon(":/lib/resources/icon/arrow_back_black_inactive.svg"));
-    forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_black_inactive.svg"));
-    reloadButton->setIcon(QIcon(":/lib/resources/icon/reload_black.svg"));
+    backButton->setIcon(QIcon(":/lib/resources/icon/arrow_back_light_inactive.svg"));
+    forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_light_inactive.svg"));
+    reloadButton->setIcon(QIcon(":/lib/resources/icon/reload_light.svg"));
 
     connect(backButton, &QPushButton::clicked, this, [this](){
         emit back();
@@ -56,17 +56,17 @@ NavigationButtonGroup::~NavigationButtonGroup()
 }
 
 void NavigationButtonGroup::unsetForward(){
-    forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_black_inactive.svg"));
+    forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_light_inactive.svg"));
 };
 
 void NavigationButtonGroup::unsetBackward(){
-    backButton->setIcon(QIcon(":/lib/resources/icon/arrow_back_black_inactive.svg"));
+    backButton->setIcon(QIcon(":/lib/resources/icon/arrow_back_light_inactive.svg"));
 };
 
 void NavigationButtonGroup::setForward(){
-    forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_black.svg"));
+    forwardButton->setIcon(QIcon(":/lib/resources/icon/arrow_forward_light.svg"));
 };
 
 void NavigationButtonGroup::setBackward(){
-    backButton->setIcon(QIcon(":/lib/resources/icon/arrow_back_black.svg"));
+    backButton->setIcon(QIcon(":/lib/resources/icon/arrow_back_light.svg"));
 };

@@ -22,9 +22,8 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     */
 
     // TODO : FIX MARGIN AND ALIGNMENTS
-
+    this->setObjectName("TabItem");
     this->setAttribute(Qt::WA_StyledBackground, true);
-
 
     this->setFixedHeight(35);
     this->setMaximumWidth(220);
@@ -39,7 +38,7 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     favicon = new QLabel(this);
     title = new QLabel(this);
 
-    closeTabButton = new QPushButton(QIcon(":/lib/resources/icon/cross_black.svg"), "", this);
+    closeTabButton = new QPushButton(QIcon(":/lib/resources/icon/cross_light.svg"), "", this);
     closeTabButton->setIconSize(QSize(12, 12));
     closeTabButton->setFixedSize(20, 20);
     closeTabButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -47,7 +46,6 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     // closeTabButton->setContentsMargins(3,0,3,0);
     connect(closeTabButton, &QPushButton::clicked, this, &TabItem::onCloseButtonPressed);
 
-    // QPixmap pixmap(":/lib/resources/icon/searchengines/google-color.svg");
     favicon->setPixmap(tab_pixmap.scaled(
         favicon->size(),               // scale to label size
         Qt::KeepAspectRatio,          // maintain aspect ratio
@@ -59,7 +57,7 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     // favicon->setContentsMargins(3,0,0,0);
 
     title->setText(tab_title);
-    title->setObjectName("title");
+    title->setObjectName("TabBarTitle");
     // title->setStyleSheet("QLabel#title{border:1px solid blue}");
     title->setMinimumWidth(30);
     title->setMaximumWidth(150);
@@ -74,7 +72,6 @@ TabItem::TabItem(QWidget *parent, const QString &title_string, const QPixmap &pi
     hboxLayout->addWidget(favicon);
     hboxLayout->addWidget(title);
     hboxLayout->addWidget(closeTabButton);
-
 }
 
 TabItem::~TabItem()
@@ -114,11 +111,22 @@ void TabItem::setFavicon(const QPixmap &new_pixmap){
 }
 
 void TabItem::setSelected(bool selected){
-    if (selected)
-        setStyleSheet(R"(background-color: #FDF6EC;
+    if (selected){
+        this->setProperty("selected", "true");
+        this->style()->unpolish(this);
+        this->style()->polish(this);
 
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;)");
-    else
-        setStyleSheet("background-color: none;");
+        title->setProperty("selected", "true");
+        title->style()->unpolish(title);
+        title->style()->polish(title);
+    }
+    else{
+        this->setProperty("selected", "false");
+        this->style()->unpolish(this);
+        this->style()->polish(this);
+
+        title->setProperty("selected", "false");
+        title->style()->unpolish(title);
+        title->style()->polish(title);
+    }
 }

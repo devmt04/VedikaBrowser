@@ -1,74 +1,111 @@
-QWidget#MainWindow{
-    margin: 0;
-}
-
+/*NavigationBar*/
 QLineEdit#urlInputBar {
     border : none;
-    background-color:#FFDCA8;
-    placeholder-text-color:#7E4E1E;
+    background-color:#161A1D;
+    placeholder-text-color:#D3DAE1;
+    color:#FDFDFB;
 }
-
 QWidget#SearchBarContainer{
-    background-color: #FFDCA8;
-    border-radius: 7px;
+    background-color:#161A1D;
+    border-radius:13px;
 }
-
 QWidget#NaviBarContainer{
-    background-color:#FDF6EC;   
+    background-color:#292E32;
+}
+QLineEdit#urlInputBar[state="focused"]{
+    background-color:#292E32;
+    border:none;
+}
+QWidget#SearchBarContainer[state="focused"]{
+    background-color:#292E32;
+    border:1px solid #D3DAE1;
+}
+QWidget#WebAreaLayoutControllerContainer{
+    background-color: #161A1D;
+    border-radius: 13px;
+}
+QComboBox#webAreaLayoutController{
+    background-color:#161A1D;
+    border:none;
+    color:#FDFDFB;
+}
+QComboBox#webAreaLayoutController:on {
+    color:#FDFDFB;
+    background-color: #161A1D;
+}
+QComboBox#webAreaLayoutController::drop-down {
+    width: 24px;
+    border:none;
+}
+QComboBox#webAreaLayoutController::down-arrow {
+    image : url(:/lib/resources/icon/drop_down_light.svg);
+    border:none;
+}
+QComboBox#webAreaLayoutController QAbstractItemView {
+    border: none;
+    border-radius:15px;
+    background-color:#292E32;
 }
 
-QPushButton[class="borderless"] {
+/*TabBar*/
+QWidget#tabbar{
+    background-color:#161A1D;
+    border:none;
+}
+QWidget#customTabBarWidget{
+    background-color:#161A1D;
+    border:none;
+}
+QWidget#tabContainer{
+    background-color:#161A1D;
+    border:none;
+}
+QWidget#tabScrollArea{
+    background-color:#161A1D;
+    border:none;
+}
+QWidget#TabItem[selected="true"]{
+    background-color:#292E32;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+}
+QLabel#TabBarTitle[selected="true"]{
+    color:#FDFDFB;
+}
+QLabel#TabBarTitle[selected="false"]{
+    color:#D3DAE1;
+}
+QWidget#TabItem[selected="false"]{
+    background-color:none;
+}
+QPushButton#addNewTabButton{
+    background-color:#161A1D;
+}
+QPushButton#closeTabButton{
+    border:none;
+}
+QPushButton#closeTabButton:hover{
+    border:none;
+    border-radius:10px; /*half of the icon size*/
+    background-color:#292E32;
+}
+
+
+
+QPushButton[class="borderless"]{
     border: none;
 }
 
 QPushButton#applicationExitButton{
-    padding:3px;
-}
-QWidget#tabbar{
-    padding-right:12px;
+    border:none;
 }
 
 QPushButton#applicationExitButton:hover{
-    background-color: #FDF6EC;
+    background-color: red;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 12px;
 }
 
-QPushButton#closeTabButton{
-    border:none;
+QWidget#gridViewContainer[theme="dark"]{
+    background-color:#161A1D;
 }
-
-QPushButton#closeTabButton:hover{
-    border:none;
-    border-radius:100%;
-    background-color:red;
-}
-
-
-
-QTabBar::tab {
-    background: #FFE5BF;
-/*    border: 1px solid #ccc;*/
-    padding: 6px 12px;
-/*    width: 120px;*/
-    max-width: 120px;
-    min-width: 50px;
-    border: none;
-}
-
-
-QTabBar::tab:selected {
-    background: #FDF6EC;
-    border-top: 1px solid #F5BD8A;
-    border-left : 1px solid #F5BD8A;
-    border-right : 1px solid #F5BD8A;
-    border-bottom-color: transparent;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-/*    font-weight: bold;*/
-}
-
-QTabBar::tab:hover {
-    background-color: #FFCE87;
-}
-

@@ -23,6 +23,7 @@ SearchBar::SearchBar(QWidget *parent)
 
     searchbarLayout = new QHBoxLayout(this);
     this->setLayout(searchbarLayout);
+    searchbarLayout->setContentsMargins(8, 0, 8, 0);
 
     searchEngineSwitchButton = new QPushButton(this);
     urlInputBar = new QLineEdit(this);
@@ -48,11 +49,15 @@ SearchBar::~SearchBar()
     delete ui;
 }
 
+QString SearchBar::getInputBarText() const{
+    return urlInputBar->text();
+}
+
 void SearchBar::setInputBarText(const QString &text){
     if (QString::compare(text, "qrc:/lib/resources/webpages/startup_light.html", Qt::CaseSensitive) != 0) {
         urlInputBar->setText(text);
         urlInputBar->setCursorPosition(0);
-        //TODO-FIX:After calling setCursorPosition() the cursor is still visible when QLineEdit is out of foucs
+        //TODO-FIX: After calling setCursorPosition() the cursor is still visible when QLineEdit is out of foucs
     }else{
         urlInputBar->clear();
     }
@@ -60,9 +65,16 @@ void SearchBar::setInputBarText(const QString &text){
 
 bool SearchBar::eventFilter(QObject *watched, QEvent *event){
     if(watched == urlInputBar && event->type() == QEvent::FocusIn){
+        urlInputBar->setProperty("state", "focused");
+        urlInputBar->style()->unpolish(urlInputBar);
+        urlInputBar->style()->polish(urlInputBar);
+        // update();
         emit lineEditFocusIn();
         return true;
     }else if(watched == urlInputBar && event->type() == QEvent::FocusOut){
+        urlInputBar->setProperty("state", "");
+        urlInputBar->style()->unpolish(urlInputBar);
+        urlInputBar->style()->polish(urlInputBar);
         emit lineEditFocusOut();
         return true;
     }else if(watched == urlInputBar && event->type() == QEvent::KeyPress){
@@ -78,6 +90,7 @@ bool SearchBar::eventFilter(QObject *watched, QEvent *event){
 
 
 QUrl SearchBar::processQuery(const QString &query){
+    // use QUrl::fromUserInput()
     QUrl encodedUrl;
     if(!query.isEmpty()){
         if(!isUrl(query)){

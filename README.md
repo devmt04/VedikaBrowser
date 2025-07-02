@@ -8,13 +8,23 @@ Built using the Qt framework for the GUI and Qt WebEngine for rendering web cont
 
 ![Home Screen](lib/resources/screenshots/1.png)
 
-![Web View](lib/resources/screenshots/2.png)
+![Split View](lib/resources/screenshots/2.png)
+
+![Split View](lib/resources/screenshots/3.png)
+
+![Grid View](lib/resources/screenshots/4.png)
 
 ## Contributing
 
 Contributions are welcome! If you have suggestions, bug reports, or improvements, feel free to open an issue or submit a pull request.
 
+<<<<<<< HEAD
 For the current development version, please refer to the `dev` branch.
+=======
+## Known Issues
+
+See [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) for current limitations and bugs.
+>>>>>>> dev
 
 ## License
 

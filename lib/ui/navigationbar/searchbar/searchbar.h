@@ -11,6 +11,8 @@
 #include <QHBoxLayout>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QSizePolicy>
+#include <QStyle>
 
 namespace Ui {
 class SearchBar;
@@ -24,6 +26,7 @@ public:
     explicit SearchBar(QWidget *parent = nullptr);
     ~SearchBar();
     void setInputBarText(const QString &text);
+    QString getInputBarText() const;
 
 signals:
     void lineEditFocusIn();

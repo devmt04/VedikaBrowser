@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QtWebEngineWidgets/QWebEngineView>
 #include <QWebEngineHistory>
+#include <QDebug>
 
 namespace Ui {
 class WebEngineView;
@@ -23,17 +24,19 @@ public:
     ~WebEngineView();
     void loadUrl(const QUrl &url);
     QUrl getUrl() const;
+    QString getTitle() const;
+    // getfavivon
     void back();
     void forward();
     void reload();
     // void checkHistoryNavigationState();
 
 signals:
-    void urlChanged(const QString &url, WebEngineView *senderView);
+    void urlChanged(const QString &url);
     void titleChanged(const QString &new_title);
     void faviconChanged(const QIcon &new_favicon);
-    void backButtonState(bool state);
-    void forwardButtonState(bool state);
+    void backButtonState(bool enabled);
+    void forwardButtonState(bool enabled);
 
 private slots:
     void onUrlChanged(const QUrl &url);

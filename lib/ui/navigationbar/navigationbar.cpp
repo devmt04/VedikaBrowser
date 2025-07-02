@@ -5,8 +5,6 @@
 
 #include "ui_navigationbar.h"
 
-#include <QDebug>
-
 NavigationBar::NavigationBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::NavigationBar)
@@ -16,17 +14,20 @@ NavigationBar::NavigationBar(QWidget *parent)
     └── QHBoxLayout (horizontalLayout)
         ├── NavigationButtonGroup (naviBtnGrp)
         └── SearchBar (searchBar)
+        └── WebAreaLayoutController (webareaLayoutController)
     */
     // ui->setupUi(this);
 
     this->setObjectName("NaviBarContainer");
     this->setAttribute(Qt::WA_StyledBackground, true);
-
+    this->setMaximumHeight(43);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     horizontalLayout = new QHBoxLayout(this);
     this->setLayout(horizontalLayout);
 
     naviButtonGrp = new NavigationButtonGroup(this);
     searchBar = new SearchBar(this);
+    webareaLayoutController = new WebAreaLayoutController(this);
 
     connect(searchBar, &SearchBar::lineEditFocusIn, this, &NavigationBar::onSearchBarInFocus);
     connect(searchBar, &SearchBar::lineEditFocusOut, this, &NavigationBar::onSearchBarOutFocus);
@@ -42,9 +43,14 @@ NavigationBar::NavigationBar(QWidget *parent)
         emit pageReload();
     });
 
+    connect(webareaLayoutController, &WebAreaLayoutController::indexChanged, this, [this](int index){
+        emit layoutChanged(index);
+    });
+
     horizontalLayout->setContentsMargins(3,5,5,5); // int left, int top, int right, int bottom
     horizontalLayout->addWidget(naviButtonGrp);
     horizontalLayout->addWidget(searchBar);
+    horizontalLayout->addWidget(webareaLayoutController);
 
     // TODO : Handle double click event to miniize/maximize the Browser's Window
 }
@@ -69,13 +75,15 @@ void NavigationBar::setForwardButtonState(bool active){
 }
 
 void NavigationBar::onSearchBarInFocus(){
-    searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FDF6EC;placeholder-text-color:#7E4E1E;border:none;}");
-    this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FDF6EC;border:1px solid #FFDCA8;border-radius:7px}");
+    searchBar->setProperty("state", "focused");
+    searchBar->style()->unpolish(searchBar);
+    searchBar->style()->polish(searchBar);
 }
 
 void NavigationBar::onSearchBarOutFocus(){
-    searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FFDCA8;placeholder-text-color:#7E4E1E;border:none;}");
-    this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FFDCA8;border:none;border-radius:7px}");
+    searchBar->setProperty("state", "");
+    searchBar->style()->unpolish(searchBar);
+    searchBar->style()->polish(searchBar);
 }
 
 void NavigationBar::onLineEditReturnPress(const QUrl &url)
@@ -86,3 +94,24 @@ void NavigationBar::onLineEditReturnPress(const QUrl &url)
 void NavigationBar::setSearchbarText(const QString &text){
     searchBar->setInputBarText(text);
 }
+
+void NavigationBar::setMessage(const QString &text){
+    const QString &originalText = searchBar->getInputBarText();
+    searchBar->setInputBarText(text);
+
+    QTimer *timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, &QTimer::timeout, this, [this, originalText, timer](){
+        qDebug() << "timeout" ;
+        searchBar->setInputBarText(originalText);
+        timer->deleteLater();
+    });
+    timer->start(3500);
+    // TODO : Animation
+}
+
+void NavigationBar::setLayoutControllerIndex(int index){
+    webareaLayoutController->setComboBoxIndex(index);
+}
+
+// TODO : use a mediator class for slot-signal connections ?
