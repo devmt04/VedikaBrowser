@@ -59,9 +59,13 @@ private:
 
     TabSelectionDialog *tabSelectionDialog;
     void clearLayout(bool free = false); // Remove all children safely
+    void replaceViews(WebEngineView *oldView, WebEngineView *newView);
     void setupSingle(const QVector<WebEngineView*> &views);
     void setupSplit(const QVector<WebEngineView*> &views);
     void setupGrid(const QVector<WebEngineView*> &views);
+
+    void equalizesSplitter();
+    void equalizesGrid();
     // popup
 
 };

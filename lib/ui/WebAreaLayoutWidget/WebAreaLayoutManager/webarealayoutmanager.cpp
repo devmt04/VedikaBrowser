@@ -55,7 +55,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
         }else{
             // Prompt user to choose : either based on recently visited or selection
             // Show a selection Dialog window
-            TabSelectionDialog *tabSelectionDialog = new TabSelectionDialog(this, views);
+            TabSelectionDialog *tabSelectionDialog = new TabSelectionDialog(this, views, 4, 2); // 4, 2 = max and min capacity of layout
             if (tabSelectionDialog->exec() == QDialog::Accepted) {
                 currentActiveViews = tabSelectionDialog->getSelectedViews();
                 tabSelectionDialog->deleteLater();
@@ -77,7 +77,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
             setupGrid(currentActiveViews);
             break;
         }else{
-            TabSelectionDialog *tabSelectionDialog = new TabSelectionDialog(this, views);
+            TabSelectionDialog *tabSelectionDialog = new TabSelectionDialog(this, views, 4, 4);
             if (tabSelectionDialog->exec() == QDialog::Accepted) {
                 currentActiveViews = tabSelectionDialog->getSelectedViews();
                 tabSelectionDialog->deleteLater();
@@ -94,6 +94,36 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
     emit layoutApplied(mode);
 }
 
+void WebAreaLayoutManager::replaceViews(WebEngineView *oldView, WebEngineView *newView){
+    QLayout *l = layout();
+    QLayoutItem *item = l->itemAt(0);
+    QWidget *w = item ? item->widget() : nullptr;
+    // Ignore if SingleView
+    if(w){
+        if(QSplitter *splitter = qobject_cast<QSplitter*>(w)){
+            qDebug() << "Found QSplitter";
+            int idx = splitter->indexOf(oldView);
+            if(idx!=-1){
+                newView->setParent(splitter);
+                newView->show();
+                oldView->hide();
+                oldView->setParent(this);
+                splitter->replaceWidget(idx, newView);
+                equalizesSplitter();
+            }
+        }else{
+            qDebug() << "Found Grid";
+            newView->setParent(w);
+            newView->show();
+            oldView->hide();
+            gridLayout->replaceWidget(oldView, newView);
+            equalizesGrid();
+            oldView->setParent(this);
+        }
+    }
+
+        // delete item;
+}
 
 void WebAreaLayoutManager::clearLayout(bool free) {
     QLayout *l = layout();
@@ -125,6 +155,7 @@ void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*> &views){
 }
 
 void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
+    qDebug() << "hello";
     clearLayout();
     if (splitterLayout){
         for(WebEngineView *view : splitterLayout->findChildren<WebEngineView*>()){
@@ -147,6 +178,9 @@ void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
     horizontalLayout->addWidget(splitterLayout);
 
     // Equalize width
+    equalizesSplitter();
+}
+void WebAreaLayoutManager::equalizesSplitter(){
     if (splitterLayout->count() > 1) {
         QList<int> sizes;
         int width = splitterLayout->width() / splitterLayout->count();
@@ -156,7 +190,6 @@ void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
         splitterLayout->setSizes(sizes);
     }
 }
-
 void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
     clearLayout();
     if(gridContainer){
@@ -185,11 +218,22 @@ void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
             view->setParent(this); // ?
         i++;
     }
-
     gridContainer->setLayout(gridLayout);
     horizontalLayout->addWidget(gridContainer);
+    equalizesGrid();
 }
 
+void WebAreaLayoutManager::equalizesGrid(){
+    int rowCount = gridLayout->rowCount();
+    int colCount = gridLayout->columnCount();
+
+    for (int i = 0; i < rowCount; ++i)
+        gridLayout->setRowStretch(i, 1);
+
+    for (int j = 0; j < colCount; ++j)
+        gridLayout->setColumnStretch(j, 1);
+
+}
 
 void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
     if(view != currentSelectedView){
@@ -204,15 +248,17 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
                 if(currentActiveViews.size()<4){
                     // If selected tab is not there + max capacity of Split view NOT fullfilled, then append
                     currentActiveViews.append(view);
+                    applyLayout(1, currentActiveViews);
                 }
                 else{
                     // If selected tab is not there + also max capacity of Split view is already fullfilled, then use intelligence or custom saved setting to append
-                    currentActiveViews.takeAt(0);
+                    WebEngineView *oldView = currentActiveViews.takeAt(0);
+                    replaceViews(oldView, view);
                     currentActiveViews.append(view);
                     // as of now, replace it with first view
                     // TODO : Manupulate Current Active view
+                        // fix <Splitter::replaceWidget: Trying to replace a widget with one of its siblings> warning
                 }
-                applyLayout(1, currentActiveViews);
                 break;
             } // TODO : Optimized this block
             break;
@@ -220,20 +266,18 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
             // TODO : More work here
             if(currentActiveViews.indexOf(view) == -1){
                 if(currentActiveViews.size()>=4){
-                    currentActiveViews.takeAt(0);
+                    WebEngineView *oldView = currentActiveViews.takeAt(0);
                     currentActiveViews.append(view);
-                    applyLayout(2, currentActiveViews);
-                    // TODO : merge logic for case 1 and 2
+                    replaceViews(oldView, view);
+                    // applyLayout(2, currentActiveViews);
                 }
                 break;
             }else{
                 if(currentActiveViews.size()<4){
-                    applyLayout(1, currentActiveViews); // Then apply split view
+                    applyLayout(1, currentActiveViews); // apply split view
                 }
             }
             break;
         };
     }
 }
-
-//TODO : Instead of apply whole layout again, just replace particular views!

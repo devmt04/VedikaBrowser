@@ -57,7 +57,7 @@ void SearchBar::setInputBarText(const QString &text){
     if (QString::compare(text, "qrc:/lib/resources/webpages/startup_light.html", Qt::CaseSensitive) != 0) {
         urlInputBar->setText(text);
         urlInputBar->setCursorPosition(0);
-        //TODO-FIX:After calling setCursorPosition() the cursor is still visible when QLineEdit is out of foucs
+        //TODO-FIX: After calling setCursorPosition() the cursor is still visible when QLineEdit is out of foucs
     }else{
         urlInputBar->clear();
     }

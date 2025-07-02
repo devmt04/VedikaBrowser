@@ -129,11 +129,4 @@ void TabItem::setSelected(bool selected){
         title->style()->unpolish(title);
         title->style()->polish(title);
     }
-        // setStyleSheet("background-color: none;color:#D3DAE1;");
-
-
-    //     setStyleSheet(R"(background-color: #292E32;
-    // border-top-left-radius: 10px;
-    // border-top-right-radius: 10px;
-    // color:#FDFDFB;)");
 }
