@@ -18,13 +18,12 @@ Built using the Qt framework for the GUI and Qt WebEngine for rendering web cont
 
 Contributions are welcome! If you have suggestions, bug reports, or improvements, feel free to open an issue or submit a pull request.
 
-<<<<<<< HEAD
 For the current development version, please refer to the `dev` branch.
-=======
+
 ## Known Issues
 
 See [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) for current limitations and bugs.
->>>>>>> dev
+
 
 ## License
 
