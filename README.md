@@ -12,6 +12,8 @@ Built using the Qt framework for the GUI and Qt WebEngine for rendering web cont
 
 ![Split View](lib/resources/screenshots/3.png)
 
+![Grid View](lib/resources/screenshots/4.png)
+
 ## Contributing
 
 Contributions are welcome! If you have suggestions, bug reports, or improvements, feel free to open an issue or submit a pull request.
