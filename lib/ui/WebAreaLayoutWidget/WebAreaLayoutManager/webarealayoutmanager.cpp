@@ -46,7 +46,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
         // Filter views here
         if(views.size() < 2){
             // will fallback to Single View
-            emit message("Split view requires at least 2 tabs!", mode);
+            emit message("Split view requires at least 2 tabs!");
             break;
         }else if(views.size() <= 4){
             currentActiveViews = views;
@@ -61,7 +61,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
                 tabSelectionDialog->deleteLater();
                 setupSplit(currentActiveViews);
             }else{
-                emit message("Split View can not be applied!", mode);
+                emit message("Split View can not be applied!");
             }
             break;
         }
@@ -70,7 +70,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
         // As of now, it suppoorts only 4 tabs at max
         // Need atleast 4 views
         if(views.size() < 4){
-            emit message("Grid view requires at least 4 tabs!", mode);
+            emit message("Grid view requires at least 4 tabs!");
             break;
         }else if(views.size() == 4){
             currentActiveViews = views;
@@ -83,7 +83,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
                 tabSelectionDialog->deleteLater();
                 setupGrid(currentActiveViews);
             }else{
-                emit message("Grid View can not be applied!", mode);
+                emit message("Grid View can not be applied!");
             }
             break;
         }
@@ -91,6 +91,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
     default:
         qDebug() << "Unsupported layout mode!";
     };
+    emit layoutApplied(mode);
 }
 
 
@@ -221,10 +222,14 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
                 if(currentActiveViews.size()>=4){
                     currentActiveViews.takeAt(0);
                     currentActiveViews.append(view);
+                    applyLayout(2, currentActiveViews);
                     // TODO : merge logic for case 1 and 2
                 }
-                applyLayout(2, currentActiveViews);
                 break;
+            }else{
+                if(currentActiveViews.size()<4){
+                    applyLayout(1, currentActiveViews); // Then apply split view
+                }
             }
             break;
         };

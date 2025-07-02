@@ -19,8 +19,11 @@ WebAreaLayoutWidget::WebAreaLayoutWidget(QWidget *parent)
 
     this->setLayout(horizontalLayout);
 
-    connect(layoutManager, &WebAreaLayoutManager::message, this, [this](const QString &text, int mode){
-        emit message(text, mode);
+    connect(layoutManager, &WebAreaLayoutManager::message, this, [this](const QString &text){
+        emit message(text);
+    });
+    connect(layoutManager, &WebAreaLayoutManager::layoutApplied, this, [this](int layout){
+        emit layoutChanged(layout);
     });
 }
 
@@ -40,6 +43,7 @@ void WebAreaLayoutWidget::addNewWebView(int index){
     layoutManager->setCurrentWebArea(newWebWidget);
 
     globalWebViewVector.insert(index, newWebWidget);
+
     connect(newWebWidget, &WebEngineView::urlChanged, this, [this](const QUrl &url){
         emit webViewUrlChanged(url.toDisplayString());
     });

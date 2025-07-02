@@ -71,16 +71,13 @@ MainWindow (QMainWindow)
         navigationBar->setForwardButtonState(enabled);
     });
 
-    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [this](const QString &text, int mode){
+    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [this](const QString &text){
         navigationBar->setMessage(text);
-        if(mode == 1){
-            // fallback to single
-            navigationBar->setLayoutControllerIndex(0);
-        }else{
-            // mode == 2, fallback to split
-            navigationBar->setLayoutControllerIndex(1);
-        }
     });
+    connect(webAreaLayout, &WebAreaLayoutWidget::layoutChanged, this, [this](int layout){
+        navigationBar->setLayoutControllerIndex(layout);
+    });
+
     this->setCentralWidget(centralWidget);
     this->showMaximized();
 
