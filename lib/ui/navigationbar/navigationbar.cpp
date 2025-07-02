@@ -14,6 +14,7 @@ NavigationBar::NavigationBar(QWidget *parent)
     └── QHBoxLayout (horizontalLayout)
         ├── NavigationButtonGroup (naviBtnGrp)
         └── SearchBar (searchBar)
+        └── WebAreaLayoutController (webareaLayoutController)
     */
     // ui->setupUi(this);
 
@@ -74,13 +75,15 @@ void NavigationBar::setForwardButtonState(bool active){
 }
 
 void NavigationBar::onSearchBarInFocus(){
-    searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FDF6EC;placeholder-text-color:#7E4E1E;border:none;}");
-    this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FDF6EC;border:1px solid #FFDCA8;border-radius:13px}");
+    searchBar->setProperty("state", "focused");
+    searchBar->style()->unpolish(searchBar);
+    searchBar->style()->polish(searchBar);
 }
 
 void NavigationBar::onSearchBarOutFocus(){
-    searchBar->setStyleSheet("QLineEdit#urlInputBar{background-color:#FFDCA8;placeholder-text-color:#7E4E1E;border:none;}");
-    this->setStyleSheet("QWidget#SearchBarContainer{background-color:#FFDCA8;border:none;border-radius:13px}");
+    searchBar->setProperty("state", "");
+    searchBar->style()->unpolish(searchBar);
+    searchBar->style()->polish(searchBar);
 }
 
 void NavigationBar::onLineEditReturnPress(const QUrl &url)
@@ -107,5 +110,8 @@ void NavigationBar::setMessage(const QString &text){
     // TODO : Animation
 }
 
+void NavigationBar::setLayoutControllerIndex(int index){
+    webareaLayoutController->setComboBoxIndex(index);
+}
 
 // TODO : use a mediator class for slot-signal connections ?

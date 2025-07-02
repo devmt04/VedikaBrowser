@@ -19,8 +19,8 @@ WebAreaLayoutWidget::WebAreaLayoutWidget(QWidget *parent)
 
     this->setLayout(horizontalLayout);
 
-    connect(layoutManager, &WebAreaLayoutManager::message, this, [this](const QString &text){
-        emit message(text);
+    connect(layoutManager, &WebAreaLayoutManager::message, this, [this](const QString &text, int mode){
+        emit message(text, mode);
     });
 }
 

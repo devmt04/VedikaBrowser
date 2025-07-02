@@ -18,6 +18,7 @@ WebAreaLayoutController::WebAreaLayoutController(QWidget *parent)
 
     controller = new QComboBox(this);
     controller->setObjectName("webAreaLayoutController");
+    controller->setAttribute(Qt::WA_StyledBackground, true);
     controller->addItems({"Single View", "Split View", "Grid View", "Popup View"});
     connect(controller, &QComboBox::currentIndexChanged, this, [this](int index){
         emit indexChanged(index);
@@ -29,4 +30,8 @@ WebAreaLayoutController::WebAreaLayoutController(QWidget *parent)
 WebAreaLayoutController::~WebAreaLayoutController()
 {
     // delete ui;
+}
+
+void WebAreaLayoutController::setComboBoxIndex(int index){
+    controller->setCurrentIndex(index);
 }

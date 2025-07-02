@@ -39,7 +39,7 @@ signals:
     void webViewFaviconChanged(int index, const QIcon &favicon);
     void backButtonState(bool enabled);
     void forwardButtonState(bool enabled);
-    void message(const QString &text);
+    void message(const QString &text, int mode);
 
 private:
     // Ui::WebAreaLayoutWidget *ui;

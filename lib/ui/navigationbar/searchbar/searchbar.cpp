@@ -27,6 +27,7 @@ SearchBar::SearchBar(QWidget *parent)
 
     searchEngineSwitchButton = new QPushButton(this);
     urlInputBar = new QLineEdit(this);
+
     // Search Engine Switch Button Properties
     searchEngineSwitchButton->setProperty("class", "borderless");
     searchEngineSwitchButton->setIcon(QIcon(":/lib/resources/icon/searchengines/google-color.svg"));
@@ -64,9 +65,16 @@ void SearchBar::setInputBarText(const QString &text){
 
 bool SearchBar::eventFilter(QObject *watched, QEvent *event){
     if(watched == urlInputBar && event->type() == QEvent::FocusIn){
+        urlInputBar->setProperty("state", "focused");
+        urlInputBar->style()->unpolish(urlInputBar);
+        urlInputBar->style()->polish(urlInputBar);
+        // update();
         emit lineEditFocusIn();
         return true;
     }else if(watched == urlInputBar && event->type() == QEvent::FocusOut){
+        urlInputBar->setProperty("state", "");
+        urlInputBar->style()->unpolish(urlInputBar);
+        urlInputBar->style()->polish(urlInputBar);
         emit lineEditFocusOut();
         return true;
     }else if(watched == urlInputBar && event->type() == QEvent::KeyPress){

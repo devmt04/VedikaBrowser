@@ -42,7 +42,7 @@ public:
     void addWebView(WebEngineView *view);
 
 signals:
-    void message(const QString &text); // messages will be displayed at NavigationBar
+    void message(const QString &text, int mode); // messages will be displayed at NavigationBar
 
 private:
     // Ui::WebAreaLayoutManager *ui;

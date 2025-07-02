@@ -25,7 +25,6 @@ MainWindow (QMainWindow)
     // this->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
     // ui->setupUi(this);
 
-
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* centralLayout = new QVBoxLayout(centralWidget);
     centralWidget->setLayout(centralLayout);
@@ -72,8 +71,15 @@ MainWindow (QMainWindow)
         navigationBar->setForwardButtonState(enabled);
     });
 
-    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [this](const QString &text){
+    connect(webAreaLayout, &WebAreaLayoutWidget::message, this, [this](const QString &text, int mode){
         navigationBar->setMessage(text);
+        if(mode == 1){
+            // fallback to single
+            navigationBar->setLayoutControllerIndex(0);
+        }else{
+            // mode == 2, fallback to split
+            navigationBar->setLayoutControllerIndex(1);
+        }
     });
     this->setCentralWidget(centralWidget);
     this->showMaximized();

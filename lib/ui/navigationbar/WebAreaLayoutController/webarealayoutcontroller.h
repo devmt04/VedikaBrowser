@@ -21,6 +21,7 @@ class WebAreaLayoutController : public QWidget
 public:
     explicit WebAreaLayoutController(QWidget *parent = nullptr);
     ~WebAreaLayoutController();
+    void setComboBoxIndex(int index);
 
 signals:
     void indexChanged(int index);

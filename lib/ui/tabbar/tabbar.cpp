@@ -10,7 +10,6 @@ TabBar::TabBar(QWidget *parent)
     , ui(new Ui::TabBar)
 {
     // TODO : Remove tabVector
-
     //  [<] [Tab1][Tab2][Tab3][+] [>]
 
     /*
@@ -31,9 +30,8 @@ TabBar::TabBar(QWidget *parent)
     tabVector.clear();
 
     // ui->setupUi(this);
-    // this->setObjectName("tabbar");
-    this->setStyleSheet("QWidget{background-color:#FFE5BF;border:none;}");
-    // this->setStyleSheet("QWidget#tabbar{padding-right:12px;}");
+    this->setObjectName("tabbar");
+    this->setAttribute(Qt::WA_StyledBackground, true);
 
     topHBoxLayout = new QHBoxLayout(this);
     topHBoxLayout->setSpacing(0);
@@ -43,6 +41,9 @@ TabBar::TabBar(QWidget *parent)
 
     // In topHBoxLayout
     customTabBarWidget = new QWidget(this);
+    customTabBarWidget->setObjectName("customTabBarWidget");
+    customTabBarWidget->setAttribute(Qt::WA_StyledBackground, true);
+
     tabHBoxLayout = new QHBoxLayout(customTabBarWidget);
     // tabHBoxLayout->setAlignment(Qt::AlignBottom);
     tabHBoxLayout->setContentsMargins(0,0,10,0); // left, top, right, bottom
@@ -51,10 +52,11 @@ TabBar::TabBar(QWidget *parent)
     customTabBarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Important
 
 
-    applicationExitButton = new QPushButton(QIcon(":/lib/resources/icon/cross_black.svg"),  "",  this);
+    applicationExitButton = new QPushButton(QIcon(":/lib/resources/icon/cross_light.svg"),  "",  this);
     applicationExitButton->setObjectName("applicationExitButton");
-    applicationExitButton->setProperty("class", "borderless");
-    applicationExitButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    applicationExitButton->setFixedHeight(24);
+    applicationExitButton->setFixedWidth(24);
+    applicationExitButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(applicationExitButton, &QPushButton::clicked, this, [=]() {
         if (QMessageBox::question(this, "Exit", "Are you sure you want to quit?") == QMessageBox::Yes) {
             qApp->quit();
@@ -65,6 +67,9 @@ TabBar::TabBar(QWidget *parent)
 
     // In customTabBarWidget - tabHBoxLayout
     tabScrollArea = new QScrollArea(customTabBarWidget);
+    tabScrollArea->setObjectName("tabScrollArea");
+    tabScrollArea->setAttribute(Qt::WA_StyledBackground, true);
+
     tabScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tabScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tabScrollArea->setWidgetResizable(true);
@@ -75,7 +80,8 @@ TabBar::TabBar(QWidget *parent)
 
     // tabScrollArea->setAlignment(Qt::AlignBottom);
 
-    addNewTabButton = new QPushButton(QIcon(":/lib/resources/icon/add_black.svg"), "", customTabBarWidget);
+    addNewTabButton = new QPushButton(QIcon(":/lib/resources/icon/add_light.svg"), "", customTabBarWidget);
+    addNewTabButton->setObjectName("addNewTabButton");
     addNewTabButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(addNewTabButton, &QPushButton::clicked, this, &TabBar::addNewTab);
     // -- end --
@@ -83,6 +89,9 @@ TabBar::TabBar(QWidget *parent)
 
     // In tabScrollArea
     tabContainer = new QWidget();
+    tabContainer->setObjectName("tabContainer");
+    tabContainer->setAttribute(Qt::WA_StyledBackground, true);
+
     tabContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // Important
     // tabContainer->setMaximumHeight(40);
     tabContainer->setFixedHeight(40);
@@ -98,7 +107,6 @@ TabBar::TabBar(QWidget *parent)
     tabHBoxLayout->addWidget(addNewTabButton);
 
     tabScrollArea->setWidget(tabContainer);
-
     topHBoxLayout->addWidget(customTabBarWidget);
     topHBoxLayout->addWidget(applicationExitButton);
 }

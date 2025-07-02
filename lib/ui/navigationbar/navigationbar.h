@@ -31,6 +31,8 @@ public:
     void setMessage(const QString &text);
     void setBackButtonState(bool active);
     void setForwardButtonState(bool active);
+    void setLayoutControllerIndex(int index);
+
 
 signals:
     void searchRequested(const QUrl &url);

@@ -11,5 +11,13 @@
         <file>lib/resources/icon/arrow_forward_black_inactive.svg</file>
         <file>lib/resources/icon/arrow_back_black_inactive.svg</file>
         <file>lib/resources/icon/arrow_back_black.svg</file>
+        <file>lib/resources/icon/add_light.svg</file>
+        <file>lib/resources/icon/cross_light.svg</file>
+        <file>lib/resources/icon/reload_light.svg</file>
+        <file>lib/resources/icon/arrow_forward_light_inactive.svg</file>
+        <file>lib/resources/icon/arrow_forward_light.svg</file>
+        <file>lib/resources/icon/arrow_back_light_inactive.svg</file>
+        <file>lib/resources/icon/arrow_back_light.svg</file>
+        <file>lib/resources/icon/drop_down_light.svg</file>
     </qresource>
 </RCC>

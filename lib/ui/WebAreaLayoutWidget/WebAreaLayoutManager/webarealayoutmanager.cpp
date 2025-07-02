@@ -48,7 +48,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
             // currentActiveViews = views;
             // // fallback to Single View
             // setupSingle(currentActiveViews);
-            emit message("Split view requires at least 2 tabs!");
+            emit message("Split view requires at least 2 tabs!", mode);
             break;
         }else if(views.size() <= 4){
             currentActiveViews = views;
@@ -63,7 +63,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
                 tabSelectionDialog->deleteLater();
                 setupSplit(currentActiveViews);
             }else{
-                emit message("Split View can not be applied!");
+                emit message("Split View can not be applied!", mode);
             }
             break;
         }
@@ -72,7 +72,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
         // As of now, it suppoorts only 4 tabs at max
         // Need atleast 4 views
         if(views.size() < 4){
-            emit message("Grid view requires at least 4 tabs!");
+            emit message("Grid view requires at least 4 tabs!", mode);
             break;
         }else if(views.size() <= 4){
             currentActiveViews = views;
@@ -85,7 +85,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
                 tabSelectionDialog->deleteLater();
                 setupGrid(currentActiveViews);
             }else{
-                emit message("Grid View can not be applied!");
+                emit message("Grid View can not be applied!", mode);
             }
             break;
         }
@@ -218,18 +218,18 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
             break;
         case 2:
             // TODO : More work here
-            if(currentActiveViews.indexOf(view) == -1){
-                if(currentActiveViews.size()<4){
-                    currentActiveViews.append(view);
-                }
-                else{
-                    currentActiveViews.takeAt(0);
-                    currentActiveViews.append(view);
-                    // TODO : merge logic for case 1 and 2
-                }
-                applyLayout(2, currentActiveViews);
-                break;
-            }
+            // if(currentActiveViews.indexOf(view) == -1){
+            //     if(currentActiveViews.size()<4){
+            //         currentActiveViews.append(view);
+            //     }
+            //     else{
+            //         currentActiveViews.takeAt(0);
+            //         currentActiveViews.append(view);
+            //         // TODO : merge logic for case 1 and 2
+            //     }
+            //     applyLayout(2, currentActiveViews);
+            //     break;
+            // }
             break;
         };
     }

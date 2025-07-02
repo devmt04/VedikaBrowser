@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QPixmap>
+#include <QStyle>
 
 namespace Ui {
 class TabItem;
