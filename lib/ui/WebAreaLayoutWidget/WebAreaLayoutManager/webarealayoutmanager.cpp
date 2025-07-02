@@ -45,9 +45,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
     case 1:
         // Filter views here
         if(views.size() < 2){
-            // currentActiveViews = views;
-            // // fallback to Single View
-            // setupSingle(currentActiveViews);
+            // will fallback to Single View
             emit message("Split view requires at least 2 tabs!", mode);
             break;
         }else if(views.size() <= 4){
@@ -74,7 +72,7 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
         if(views.size() < 4){
             emit message("Grid view requires at least 4 tabs!", mode);
             break;
-        }else if(views.size() <= 4){
+        }else if(views.size() == 4){
             currentActiveViews = views;
             setupGrid(currentActiveViews);
             break;
@@ -98,13 +96,17 @@ void WebAreaLayoutManager::applyLayout(int mode, const QVector<WebEngineView*> &
 
 void WebAreaLayoutManager::clearLayout(bool free) {
     QLayout *l = layout();
+    // So this layout can only have a QWidget
+    // Now that QWidget can be QSpillter or GridContainer
+    // Hiding these widgets, will also hide their childs, so we not need to explicitly hide all WebEngineView
     while(QLayoutItem *item = l->takeAt(0)){
         QWidget *w = item->widget();
         if(w){
-            if(free) // TODO :Optimization required
+            if(free){ // TODO : Optimization required
                 w->setParent(nullptr); // will freed OpenGL resources do this for tabs not active for long time
-            else
+            }else{
                 w->hide();
+            }
             l->removeWidget(w);
         }
         delete item; // we need to delete each LayoutItems explicitly
@@ -112,8 +114,6 @@ void WebAreaLayoutManager::clearLayout(bool free) {
 }
 
 void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*> &views){
-    // if(layout() != horizontalLayout)
-    //     this->setLayout(horizontalLayout);
     clearLayout(); // we don't gonna free OpenGL resourcces, but just hide the widget
     layout()->addWidget(views.at(0));
     WebEngineView *view = views.at(0);
@@ -125,13 +125,12 @@ void WebAreaLayoutManager::setupSingle(const QVector<WebEngineView*> &views){
 
 void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
     clearLayout();
-    // if(layout() != horizontalLayout)
-    //     this->setLayout(horizontalLayout);
     if (splitterLayout){
         for(WebEngineView *view : splitterLayout->findChildren<WebEngineView*>()){
             view->setParent(this); // reparent views to their original parent
         }
         splitterLayout->deleteLater();
+        splitterLayout = nullptr;
     }
 
     splitterLayout = new QSplitter(Qt::Horizontal, this);
@@ -159,33 +158,33 @@ void WebAreaLayoutManager::setupSplit(const QVector<WebEngineView*>& views){
 
 void WebAreaLayoutManager::setupGrid(const QVector<WebEngineView*>& views){
     clearLayout();
-    // if(layout() != horizontalLayout)
-    //     this->setLayout(horizontalLayout);
     if(gridContainer){
-        for(WebEngineView *view : gridLayout->findChildren<WebEngineView*>()){
+        for(WebEngineView *view : gridContainer->findChildren<WebEngineView*>()){
             view->setParent(this);
         }
         gridContainer->deleteLater();
     }
-
     gridContainer = new QWidget(this);
     gridLayout = new QGridLayout(gridContainer);
 
+    gridContainer->setObjectName("gridViewContainer");
+    gridContainer->setAttribute(Qt::WA_StyledBackground, true);
+    gridContainer->setProperty("theme", "dark");
     gridContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(1);
 
-    {
-        int i = 0;
-        for(WebEngineView *view : views){
-            gridLayout->addWidget(view, i / 2, i % 2);
-            if (view->parent() != nullptr)
-                view->show();
-            else
-                view->setParent(this); // ?
-            i++;
-        }
+    int i = 0;
+    for(WebEngineView *view : views){
+        gridLayout->addWidget(view, i / 2, i % 2);
+        if (view->parent() != nullptr)
+            view->show();
+        else
+            view->setParent(this); // ?
+        i++;
     }
+
     gridContainer->setLayout(gridLayout);
     horizontalLayout->addWidget(gridContainer);
 }
@@ -218,19 +217,18 @@ void WebAreaLayoutManager::setCurrentWebArea(WebEngineView *view){
             break;
         case 2:
             // TODO : More work here
-            // if(currentActiveViews.indexOf(view) == -1){
-            //     if(currentActiveViews.size()<4){
-            //         currentActiveViews.append(view);
-            //     }
-            //     else{
-            //         currentActiveViews.takeAt(0);
-            //         currentActiveViews.append(view);
-            //         // TODO : merge logic for case 1 and 2
-            //     }
-            //     applyLayout(2, currentActiveViews);
-            //     break;
-            // }
+            if(currentActiveViews.indexOf(view) == -1){
+                if(currentActiveViews.size()>=4){
+                    currentActiveViews.takeAt(0);
+                    currentActiveViews.append(view);
+                    // TODO : merge logic for case 1 and 2
+                }
+                applyLayout(2, currentActiveViews);
+                break;
+            }
             break;
         };
     }
 }
+
+//TODO : Instead of apply whole layout again, just replace particular views!
