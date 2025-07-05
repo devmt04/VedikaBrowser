@@ -1,8 +1,8 @@
 # Vedika Web Browser
 
-Vedika is a productivity-focused web browser tailored for researchers and deep work. Designed to minimize distractions, it offers a clean, efficient interface for focused online exploration.
+Vedika is a productivity-focused web browser built for researchers and deep work. It features a clean, distraction-free interface and supports multiple layout modes — including Single, Split, and Grid view — to enable efficient multitasking with multiple web pages open simultaneously.
 
-Built using the Qt framework for the GUI and Qt WebEngine for rendering web content.
+Built using the Qt framework for the UI and Qt WebEngine for rendering web content.
 
 ## Screenshots
 
